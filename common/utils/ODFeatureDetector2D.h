@@ -6,14 +6,15 @@
 #define OBJECT_DETECTION_FEATUREDETECTOR_H
 
 #include <iostream>
-
+#include <opencv2/imgproc/imgproc.hpp>
+#include <opencv2/core/core.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/xfeatures2d.hpp>
 #include "SiftGPU.h"
 
-#include <opencv2/cudafeatures2d.hpp>
+//#include <opencv2/cudafeatures2d.hpp>
 
 namespace od
 {
@@ -38,13 +39,17 @@ namespace od
 
       if(type == SIFT) {
         feature_detector_ = cv::xfeatures2d::SIFT::create();
-      } else if(type == ORB) {
-        feature_detector_ = cv::ORB::create();
-      } else if(type == SURF) {
+      } 
+	//else if(type == ORB) {
+        //feature_detector_ = cv::ORB::create();
+//      } 
+	else if(type == SURF) {
         feature_detector_ = cv::xfeatures2d::SURF::create();
-      } else if(type == ORB_GPU) {
-        feature_detector_ = cv::cuda::ORB::create();
-      } else if(type == SIFT_GPU) {
+      } 
+//else if(type == ORB_GPU) {
+//        feature_detector_ = cv::cuda::ORB::create();
+//      } 
+	else if(type == SIFT_GPU) {
         sift_gpu_ = new SiftGPU;
         //char * argv[] = {(char *)"-fo", (char *)"-1",  (char *)"-v", (char *)"1"};
         char *argv[] = {(char *) "-fo", (char *) "-1", (char *) "-v", (char *) "3", (char *) "-cuda"};

@@ -12,7 +12,7 @@ namespace od
   ODFeatureDetector2D::ODFeatureDetector2D(string type, bool use_gpu)
   {
     mode_ = SIFT; //by default it is SIFT
-
+/*
     if(use_gpu) {
 
 
@@ -32,7 +32,10 @@ namespace od
         if(sift_gpu_->CreateContextGL() != SiftGPU::SIFTGPU_FULL_SUPPORTED)
           cout << "FATAL ERROR cannot create SIFTGPU context";
       }
-    } else {
+    } 
+   else 
+*/
+
 
       //########CPU VERSIONS
 
@@ -48,8 +51,7 @@ namespace od
         feature_detector_ = cv::xfeatures2d::SURF::create();
       }
     }
-  }
-
+  
   void ODFeatureDetector2D::computeKeypointsAndDescriptors(cv::Mat const &image, cv::Mat &descriptors, vector<cv::KeyPoint> &keypoints)
   {
     if(mode_ == SIFT_GPU) {

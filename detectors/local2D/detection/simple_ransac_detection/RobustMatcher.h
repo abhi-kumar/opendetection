@@ -87,7 +87,7 @@ private:
   //The important feature of this class starts here
   //DIFFERENT TYPES OF MATCHERS, add here in this list (based on the construction
   cv::Ptr<cv::DescriptorMatcher> matcher_;
-  cv::Ptr<cv::cuda::DescriptorMatcher> matcher_gpu_;
+//  cv::Ptr<cv::cuda::DescriptorMatcher> matcher_gpu_;
   // max ratio between 1st and 2nd NN
   float ratio_;
 
