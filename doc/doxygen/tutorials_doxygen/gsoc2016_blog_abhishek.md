@@ -35,7 +35,7 @@ All the completed and on-going work will be explained in detail here, as the pro
 Happy Coding!!!!
 
 
-Classification of digits in Mnist Library  {#target1}
+Classification of digits in Mnist Library using CNN {#target1}
 ====
 
 The classification exampled added to the library involves usage of caffe library. The modalities and usage of the libraries can be studied at
@@ -157,6 +157,15 @@ Lets go through the functions involved in the process.
 			net.CopyTrainedLayersFrom(weightModelFileLoaction); @endcode And the net is asked to move forward and present the probaility using the following snippet. @code
 const vector<Blob<float>*>& result =  net.Forward(inputBlob, &type); @endcode This output vector, "result", contains the probabilities for each of the classes, The class with the maximum probobiility or score is the classified class.
 
+**The CMake Changes**
+
+The od_mandatory_dependency.cmake file has been added a new line @code find_package( Caffe REQUIRED) @endcode And thus the inclusion of caffe include directory and caffe libraries. In the CMakeLists.txt file from detectors/global2D directory, the following snippet is added @code
+ADD_DEFINITIONS(
+    -std=c++11 
+	${Caffe_DEFINITIONS}
+)
+@endcode This has been done to enable mode choice of caffe runtime, i.e., CPU or GPU, and in this example CPU.
+
 
 **Usage**
 
@@ -167,10 +176,52 @@ The example can be invoked using the following command: (From the build folder)
 The example as shown above takes 3 arguments, the locations of the weight file, network file and the image.
 
 **Next up will be a simple CNN trainer example.**
+
 Happy Coding!!!! 
 
 
+Training a classifier for digits in Mnist Library using CNN. Part 1 {#target2}
+====
+
+This particular inclusion presents a simple trainer in a most crude and easy way possible. The major requirements of CNN training using caffe are
+  - Solver file
+  - Training Network file
+  - Image Dataset and a pointer to the Dataset
 
 
+The classification exampled added to the library involves usage of caffe library. The modalities and usage of the libraries can be studied at
+
+  - [Caffe Library](http://caffe.berkeleyvision.org/)
+  - [Using Caffe Library](https://abhishek4273.com/2016/02/07/ann-chapter-3-deep-learning-using-caffe-python/)
+  - [Branch of OpenDetection for the below classifier](https://github.com/abhi-kumar/opendetection/tree/cnn_cpu)
 
 
+This example involves inclusion of three new files:
+
+  - "opendetection/examples/objectdetector/od_cnn_mnist_train_simple.cpp"
+  - "opendetection/detectors/global2D/training/ODConvTrainer.cpp"
+  - "opendetection/detectors/global2D/training/ODConvTrainer.h"
+
+**Invoking Training module of caffe**
+
+These lines invoke the trainer: 
+@code
+			Caffe::set_mode(Caffe::CPU);
+			SGDSolver<float> s(solverLocation);
+			s.Solve();
+@endcode
+
+This snippet points to solver file, the solver file points to the network file. This network file points to the file which in turn points to the dataset.
+
+
+**Usage**
+
+The example can be invoked using the following command: (From the build folder)
+
+./examples/objectdetector/od_cnn_mnist_train_simple ../examples/objectdetector/Mnist_Train/solver1.prototxt
+
+The only argument to be given is the solver file.
+
+**Next up will be a simple CNN trainer example with a graphical user interface for the solver file.**
+
+Happy Coding!!!! 

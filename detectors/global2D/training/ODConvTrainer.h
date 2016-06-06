@@ -9,7 +9,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <vector>
-
+#include <fstream>
 #include <string>
 #include <iostream>
 #include <stdio.h>
@@ -18,6 +18,8 @@
 #include "caffe/blob.hpp"
 #include "caffe/solver.hpp"
 #include "caffe/sgd_solvers.hpp"
+
+#include "solver.h"
 
 using namespace caffe;
 using namespace std;
@@ -35,6 +37,7 @@ namespace od
 				int train();
 				void init(){}
 				void setSolverLocation(string location);
+				void setSolverProperties(int argc, char *argv[]);
 				void startTraining();
 
 			private:
