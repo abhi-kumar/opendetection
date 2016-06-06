@@ -38,7 +38,7 @@ Happy Coding!!!!
 Classification of digits in Mnist Library using CNN {#target1}
 ====
 
-The classification exampled added to the library involves usage of caffe library. The modalities and usage of the libraries can be studied at
+The classification example added to the library involves usage of caffe library. The modalities and usage of the libraries can be studied at
 
   - [Caffe Library](http://caffe.berkeleyvision.org/)
   - [Using Caffe Library](https://abhishek4273.com/2016/02/07/ann-chapter-3-deep-learning-using-caffe-python/)
@@ -189,7 +189,7 @@ This particular inclusion presents a simple trainer in a most crude and easy way
   - Image Dataset and a pointer to the Dataset
 
 
-The classification exampled added to the library involves usage of caffe library. The modalities and usage of the libraries can be studied at
+The classification example added to the library involves usage of caffe library. The modalities and usage of the libraries can be studied at
 
   - [Caffe Library](http://caffe.berkeleyvision.org/)
   - [Using Caffe Library](https://abhishek4273.com/2016/02/07/ann-chapter-3-deep-learning-using-caffe-python/)
@@ -225,3 +225,38 @@ The only argument to be given is the solver file.
 **Next up will be a simple CNN trainer example with a graphical user interface for the solver file.**
 
 Happy Coding!!!! 
+
+
+Training a classifier for digits in Mnist Library using CNN. Part 2 {#target2_1}
+====
+
+This commit consists of the same simple trainer from previous commit, except for the fact that it involves a graphical user interface to select solver parameters,The classification exampled added to the library involves usage of caffe library. The modalities and usage of the libraries can be studied at
+
+  - [Caffe Library](http://caffe.berkeleyvision.org/)
+  - [Using Caffe Library](https://abhishek4273.com/2016/02/07/ann-chapter-3-deep-learning-using-caffe-python/)
+  - [Branch of OpenDetection for the below classifier](https://github.com/abhi-kumar/opendetection/tree/cnn_cpu)
+  - [GTKMM](http://www.gtkmm.org/en/)
+
+Installing GTKMM Required: In the terminal of ubuntu, type the following
+@code  sudo apt-get install libglib2.0-dev libatk1.0* libpango1.0-dev libcairo2-dev gdk-pixbuf2.0-0 libsigc++-2.0-dev libgtk-3-dev libcairomm-1.0-dev libpangomm-1.4-dev libatkmm-1.6-dev libgtkmm-3.0-dev @endcode
+
+**Usage**
+
+From the build folder invoke:
+
+./examples/objectdetector/od_cnn_mnist_train_customSolver
+
+Note:
+  - The path to the solver, train network, snapshot have to be set inside examples/objectdetector/Mnist_Train folder for this alpha version.
+  - The GUI has a update button for every parameter. It is not necessary to press each one of them. They have been included for future, eg., when only one parameter from an existing solver need to be updated. This functionality has not been added
+  - After changing the parameters, press the "Save" button and then close the window using the "x" on the top just like closing any window in Ubuntu. A custom exit has not been added yet. 
+
+
+**Next up will be a updates and additions to the GUI.**
+  - Adding a provision: if a solver file exists and the user wants to change only one parameters, it can be done
+  - Creation of CNN network using a simple GUI
+
+Happy Coding!!!!
+
+
+
