@@ -31,8 +31,8 @@ include(od_targets)
 include(od_mandatory_dependency)
 
 # 2. collect config options and set appropriate variables which will be used in the next hierarchy
-option(WITH_DOCUMENTATION "Build the OD documentation" ON)
-option(WITH_GPU "Build GPU components of the project" ON)
+option(WITH_DOCUMENTATION "Build the OD documentation" OFF)
+option(WITH_GPU "Build GPU components of the project" OFF)
 option(WITH_SVMLIGHT "Build SVM Light" ON)
 
 # 3. add all the modules

@@ -48,21 +48,21 @@ void convertToDmatch(int siftgpu_matches[][2], int num_match, vector<cv::DMatch>
 void RobustMatcher::instantiateMatcher(Model const &model, bool use_gpu)
 {
 
-  if (use_gpu_ == true) {
+/*  if (use_gpu_ == true) {
 
     //####GPU
 
     //1. for SIFT
-    matcher_gpu_ = cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_L2);
-    cv::cuda::GpuMat train_descriptors(model.get_descriptors());
-    matcher_gpu_->add(std::vector<cv::cuda::GpuMat>(1, train_descriptors));
+//    matcher_gpu_ = cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_L2);
+//    cv::cuda::GpuMat train_descriptors(model.get_descriptors());
+//    matcher_gpu_->add(std::vector<cv::cuda::GpuMat>(1, train_descriptors));
     cout << "GPU matcher instantiated ..." << endl;
 
   }
   else
   {
-    matcher_ =  cv::makePtr<cv::FlannBasedMatcher>();
-  }
+*/    matcher_ =  cv::makePtr<cv::FlannBasedMatcher>();
+  
 }
 
 RobustMatcher::RobustMatcher(Model const &model, bool use_gpu, bool use_gpu_match)
@@ -196,7 +196,7 @@ void RobustMatcher::match(const cv::Mat & descriptors_frame, const cv::Mat &desc
 {
   std::vector<std::vector<cv::DMatch> > matches;
 
-  if (use_gpu_)
+/*  if (use_gpu_)
   {
     matcher_gpu_->knnMatch(cv::cuda::GpuMat(descriptors_frame), matches, 2); // return 2 nearest neighbours
     ratioTest(matches);
@@ -207,7 +207,7 @@ void RobustMatcher::match(const cv::Mat & descriptors_frame, const cv::Mat &desc
     }
   }
   else
-  {
+*/  {
     matcher_->knnMatch(descriptors_frame, descriptors_model, matches, 2); // return 2 nearest neighbours
     ratioTest(matches);
     // 4. Fill good matches container
