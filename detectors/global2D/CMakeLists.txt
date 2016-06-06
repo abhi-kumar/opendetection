@@ -22,7 +22,7 @@ if(build)
 	"detection/ODConvClassification.h"
 
         "training/ODHOGTrainer.h"
-#	"training/ODConvTrainer.h"
+	"training/ODConvTrainer.h"
         )
 
     set(impl_incs
@@ -34,7 +34,7 @@ if(build)
         "detection/ODCascadeDetector.cpp"
 	"detection/ODConvClassification.cpp"
         "training/ODHOGTrainer.cpp"
-#	"training/ODConvTrainer.cpp"
+	"training/ODConvTrainer.cpp"
         )
 
 

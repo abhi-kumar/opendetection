@@ -53,5 +53,5 @@ OD_ADD_EXAMPLE(od_multialgo_pc FILES od_multialgo_pc.cpp
 OD_ADD_EXAMPLE(od_cnn_mnist_classification FILES od_cnn_mnist_classification.cpp
                 LINK_WITH od_common od_global_image_detector)
 
-#OD_ADD_EXAMPLE(od_cnn_train_simple FILES od_cnn_train_simple.cpp
- #               LINK_WITH od_common od_global_image_detector)
+OD_ADD_EXAMPLE(od_cnn_mnist_train_simple FILES od_cnn_mnist_train_simple.cpp
+                LINK_WITH od_common od_global_image_detector)
