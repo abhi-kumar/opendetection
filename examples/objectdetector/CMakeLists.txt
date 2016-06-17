@@ -59,4 +59,7 @@ OD_ADD_EXAMPLE(od_cnn_mnist_train_simple FILES od_cnn_mnist_train_simple.cpp
 OD_ADD_EXAMPLE(od_cnn_mnist_train_customSolver FILES od_cnn_mnist_train_customSolver.cpp
                 LINK_WITH od_common od_global_image_detector)
 
+OD_ADD_EXAMPLE(od_cnn_network_design FILES od_cnn_network_design.cpp
+                LINK_WITH od_common od_global_image_detector)
+
 

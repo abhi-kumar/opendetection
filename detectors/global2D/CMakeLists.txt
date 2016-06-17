@@ -25,6 +25,7 @@ if(build)
         "training/ODHOGTrainer.h"
 	"training/ODConvTrainer.h"
 	"training/solver.h"
+	"training/network.h"
         )
 
     set(impl_incs
@@ -38,6 +39,7 @@ if(build)
         "training/ODHOGTrainer.cpp"
 	"training/ODConvTrainer.cpp"
 	"training/solver.cpp"
+	"training/network.cpp"
         )
 
 
