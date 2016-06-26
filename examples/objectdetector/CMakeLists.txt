@@ -50,3 +50,16 @@ OD_ADD_EXAMPLE(od_multialgo_files FILES od_multialgo_files.cpp
 OD_ADD_EXAMPLE(od_multialgo_pc FILES od_multialgo_pc.cpp
                 LINK_WITH od_miscellaneous_detector)
 
+OD_ADD_EXAMPLE(od_cnn_mnist_classification FILES od_cnn_mnist_classification.cpp
+                LINK_WITH od_common od_global_image_detector)
+
+OD_ADD_EXAMPLE(od_cnn_mnist_train_simple FILES od_cnn_mnist_train_simple.cpp
+                LINK_WITH od_common od_global_image_detector)
+
+OD_ADD_EXAMPLE(od_cnn_mnist_train_customSolver FILES od_cnn_mnist_train_customSolver.cpp
+                LINK_WITH od_common od_global_image_detector)
+
+OD_ADD_EXAMPLE(od_cnn_network_design FILES od_cnn_network_design.cpp
+                LINK_WITH od_common od_global_image_detector)
+
+
