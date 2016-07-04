@@ -64,6 +64,7 @@ class NetworkCreator : public Gtk::Window
 					button_lossLayerType,
 					button_extraLayerType,
 					button_addMoreLayer3,
+					button_setNormalizationParameters,
 					button_addMoreLayer4,
 					button_addMoreLayer5,
 					button_saveFile;
@@ -97,7 +98,17 @@ class NetworkCreator : public Gtk::Window
 					text_criticalLayerWeightFillerGaussianMean,
 					text_criticalLayerWeightFillerGaussianStd,
 					text_criticalLayerDropoutRatio,
-					text_criticalLayerBias;
+					text_criticalLayerBias,
+					text_normalizationLayerTop,
+					text_normalizationLayerBottom,
+					text_normalizationLayerName,
+					text_normalizationLayerlocalSize,
+					text_normalizationLayerAlpha,
+					text_normalizationLayerBeta,
+					text_normalizationLayerK,
+					text_normalizationLayerAcrossChannel,
+					text_normalizationLayerNormalizeVariance,
+					text_normalizationLayerEps;
 		Gtk::Label 		label_networkFileName,
 					label_activationLayerType,
 					label_criticalLayerType,
@@ -140,6 +151,17 @@ class NetworkCreator : public Gtk::Window
 					label_criticalLayerPool,
 					label_criticalLayerBias,
 					title_normalizationLayerType,
+					label_normalizationLayerTop,
+					label_normalizationLayerBottom,
+					label_normalizationLayerName,
+					label_normalizationLayerlocalSize,
+					label_normalizationLayerAlpha,
+					label_normalizationLayerBeta,
+					label_normalizationLayerK,
+					label_normalizationLayerNormRegion,
+					label_normalizationLayerAcrossChannel,
+					label_normalizationLayerNormalizeVariance,
+					label_normalizationLayerEps, 
 					title_lossLayerType,
 					title_extraLayerType;
 		Gtk::ComboBox 		combo_activationLayerType,
@@ -159,7 +181,8 @@ class NetworkCreator : public Gtk::Window
 					rbutton_criticalLayerWeightFillerXavierAvg,	
 					rbutton_criticalLayerWeightFillerMSRAIn, rbutton_criticalLayerWeightFillerMSRAOut,
 					rbutton_criticalLayerWeightFillerMSRAAvg,
-					rbutton_criticalLayerPoolMax, rbutton_criticalLayerPoolAve;
+					rbutton_criticalLayerPoolMax, rbutton_criticalLayerPoolAve,
+					rbutton_normalizationLayerLRNWithin, rbutton_normalizationLayerLRNAcross;
 		
 
 		//Tree model columns:

@@ -108,6 +108,30 @@ NetworkCreator::NetworkCreator():
 	button_lossLayerType("Add Loss Layer"),
 	button_extraLayerType("Append Layer"),
 	button_addMoreLayer3("Add More Layers"),
+	button_setNormalizationParameters("Add This Layer"),
+	text_normalizationLayerTop(),
+	text_normalizationLayerBottom(),
+	text_normalizationLayerName(),
+	label_normalizationLayerTop(""),
+	label_normalizationLayerBottom(""),
+	label_normalizationLayerName(""),
+	text_normalizationLayerlocalSize(),
+	label_normalizationLayerlocalSize(""),	
+	text_normalizationLayerAlpha(),
+	text_normalizationLayerBeta(),
+	text_normalizationLayerK(),
+	label_normalizationLayerAlpha(""),
+	label_normalizationLayerBeta(""),
+	label_normalizationLayerK(""),
+	label_normalizationLayerNormRegion(""),
+	rbutton_normalizationLayerLRNWithin("WITHIN_CHANNEL"), rbutton_normalizationLayerLRNAcross("ACCROSS_CHANNEL"),
+	text_normalizationLayerAcrossChannel(),
+	text_normalizationLayerNormalizeVariance(),
+	text_normalizationLayerEps(),
+	label_normalizationLayerAcrossChannel(""),
+	label_normalizationLayerNormalizeVariance(""),
+	label_normalizationLayerEps(""),
+
 	button_addMoreLayer4("Add More Layers"),
 	button_addMoreLayer5("Add More Layers"),
 	title_normalizationLayerType(""),
@@ -916,9 +940,148 @@ NetworkCreator::NetworkCreator():
 	m_grid_normalizationLayerType.attach(title_normalizationLayerType,0,0,2,1);
 	title_normalizationLayerType.show();
 
+	button_setNormalizationParameters.signal_clicked().connect(sigc::bind<Glib::ustring>(
+		      sigc::mem_fun(*this, &NetworkCreator::on_button_clicked), "setNormalizationParameters"));
+	m_grid_normalizationLayerType.attach(button_setNormalizationParameters,0,25,2,1);
+
 	button_addMoreLayer3.signal_clicked().connect(sigc::bind<Glib::ustring>(
 		      sigc::mem_fun(*this, &NetworkCreator::on_button_clicked), "addMoreLayer3"));
-	m_grid_normalizationLayerType.attach(button_addMoreLayer3,0,2,1,1);
+	m_grid_normalizationLayerType.attach(button_addMoreLayer3,2,25,2,1);
+
+	label_normalizationLayerBottom.set_text("Bottom Layer Name: ");
+	label_normalizationLayerBottom.set_line_wrap();
+	label_normalizationLayerBottom.set_justify(Gtk::JUSTIFY_FILL);
+	m_grid_normalizationLayerType.attach(label_normalizationLayerBottom,0,1,2,1);
+	label_normalizationLayerBottom.show();
+
+	text_normalizationLayerBottom.set_max_length(100);
+	text_normalizationLayerBottom.set_text("");
+	text_normalizationLayerBottom.select_region(0, text_normalizationLayerBottom.get_text_length());
+	m_grid_normalizationLayerType.attach(text_normalizationLayerBottom,2,1,1,1);	
+	text_normalizationLayerBottom.show();
+
+	label_normalizationLayerTop.set_text("Top Layer Name: ");
+	label_normalizationLayerTop.set_line_wrap();
+	label_normalizationLayerTop.set_justify(Gtk::JUSTIFY_FILL);
+	m_grid_normalizationLayerType.attach(label_normalizationLayerTop,0,3,2,1);
+	label_normalizationLayerTop.show();
+
+	text_normalizationLayerTop.set_max_length(100);
+	text_normalizationLayerTop.set_text("");
+	text_normalizationLayerTop.select_region(0, text_normalizationLayerTop.get_text_length());
+	m_grid_normalizationLayerType.attach(text_normalizationLayerTop,2,3,1,1);	
+	text_normalizationLayerTop.show();
+
+	label_normalizationLayerName.set_text("Current Layer Name: ");
+	label_normalizationLayerName.set_line_wrap();
+	label_normalizationLayerName.set_justify(Gtk::JUSTIFY_FILL);
+	m_grid_normalizationLayerType.attach(label_normalizationLayerName,0,4,2,1);
+	label_normalizationLayerName.show();
+
+	text_normalizationLayerName.set_max_length(100);
+	text_normalizationLayerName.set_text("");
+	text_normalizationLayerName.select_region(0, text_normalizationLayerName.get_text_length());
+	m_grid_normalizationLayerType.attach(text_normalizationLayerName,2,4,1,1);	
+	text_normalizationLayerName.show();
+
+	label_normalizationLayerlocalSize.set_text("Inner Parameter - local_size: ");
+	label_normalizationLayerlocalSize.set_line_wrap();
+	label_normalizationLayerlocalSize.set_justify(Gtk::JUSTIFY_FILL);
+	m_grid_normalizationLayerType.attach(label_normalizationLayerlocalSize,0,5,2,1);
+	label_normalizationLayerlocalSize.show();
+
+	text_normalizationLayerlocalSize.set_max_length(100);
+	text_normalizationLayerlocalSize.set_text("5");
+	text_normalizationLayerlocalSize.select_region(0, text_normalizationLayerlocalSize.get_text_length());
+	m_grid_normalizationLayerType.attach(text_normalizationLayerlocalSize,2,5,1,1);	
+	text_normalizationLayerlocalSize.show();
+
+	label_normalizationLayerAlpha.set_text("Inner Parameter - alpha: ");
+	label_normalizationLayerAlpha.set_line_wrap();
+	label_normalizationLayerAlpha.set_justify(Gtk::JUSTIFY_FILL);
+	m_grid_normalizationLayerType.attach(label_normalizationLayerAlpha,0,6,2,1);
+	label_normalizationLayerAlpha.show();
+
+	text_normalizationLayerAlpha.set_max_length(100);
+	text_normalizationLayerAlpha.set_text("0.0001");
+	text_normalizationLayerAlpha.select_region(0, text_normalizationLayerAlpha.get_text_length());
+	m_grid_normalizationLayerType.attach(text_normalizationLayerAlpha,2,6,1,1);	
+	text_normalizationLayerAlpha.show();
+
+	label_normalizationLayerBeta.set_text("Inner Parameter - beta: ");
+	label_normalizationLayerBeta.set_line_wrap();
+	label_normalizationLayerBeta.set_justify(Gtk::JUSTIFY_FILL);
+	m_grid_normalizationLayerType.attach(label_normalizationLayerBeta,0,7,2,1);
+	label_normalizationLayerBeta.show();
+
+	text_normalizationLayerBeta.set_max_length(100);
+	text_normalizationLayerBeta.set_text("0.0001");
+	text_normalizationLayerBeta.select_region(0, text_normalizationLayerBeta.get_text_length());
+	m_grid_normalizationLayerType.attach(text_normalizationLayerBeta,2,7,1,1);	
+	text_normalizationLayerBeta.show();
+
+	label_normalizationLayerK.set_text("Inner Parameter - k: ");
+	label_normalizationLayerK.set_line_wrap();
+	label_normalizationLayerK.set_justify(Gtk::JUSTIFY_FILL);
+	m_grid_normalizationLayerType.attach(label_normalizationLayerK,0,8,2,1);
+	label_normalizationLayerK.show();
+
+	text_normalizationLayerK.set_max_length(100);
+	text_normalizationLayerK.set_text("1");
+	text_normalizationLayerK.select_region(0, text_normalizationLayerK.get_text_length());
+	m_grid_normalizationLayerType.attach(text_normalizationLayerK,2,8,1,1);	
+	text_normalizationLayerK.show();
+
+	label_normalizationLayerNormRegion.set_text("Inner Parameter - norm_region: ");
+	label_normalizationLayerNormRegion.set_line_wrap();
+	label_normalizationLayerNormRegion.set_justify(Gtk::JUSTIFY_FILL);
+	m_grid_normalizationLayerType.attach(label_normalizationLayerNormRegion,0,9,2,1);
+	label_normalizationLayerNormRegion.show();
+
+	Gtk::RadioButton::Group group5 = rbutton_normalizationLayerLRNWithin.get_group();
+ 	rbutton_normalizationLayerLRNAcross.set_group(group5);
+ 	rbutton_normalizationLayerLRNWithin.set_active();
+	m_grid_normalizationLayerType.attach(rbutton_normalizationLayerLRNWithin,2,9,1,1);
+	rbutton_normalizationLayerLRNWithin.show();
+	m_grid_normalizationLayerType.attach(rbutton_normalizationLayerLRNAcross,3,9,1,1);
+	rbutton_normalizationLayerLRNAcross.show();
+
+	label_normalizationLayerAcrossChannel.set_text("Inner Parameter - across_channels: \n(boolean- 0 or 1)");
+	label_normalizationLayerAcrossChannel.set_line_wrap();
+	label_normalizationLayerAcrossChannel.set_justify(Gtk::JUSTIFY_FILL);
+	m_grid_normalizationLayerType.attach(label_normalizationLayerAcrossChannel,0,10,2,1);
+	label_normalizationLayerAcrossChannel.show();
+
+	text_normalizationLayerAcrossChannel.set_max_length(100);
+	text_normalizationLayerAcrossChannel.set_text("0");
+	text_normalizationLayerAcrossChannel.select_region(0, text_normalizationLayerAcrossChannel.get_text_length());
+	m_grid_normalizationLayerType.attach(text_normalizationLayerAcrossChannel,2,10,1,1);	
+	text_normalizationLayerAcrossChannel.show();
+
+	label_normalizationLayerNormalizeVariance.set_text("Inner Parameter - normalize_variance: \n(boolean- 0 or 1)");
+	label_normalizationLayerNormalizeVariance.set_line_wrap();
+	label_normalizationLayerNormalizeVariance.set_justify(Gtk::JUSTIFY_FILL);
+	m_grid_normalizationLayerType.attach(label_normalizationLayerNormalizeVariance,0,11,2,1);
+	label_normalizationLayerNormalizeVariance.show();
+
+	text_normalizationLayerNormalizeVariance.set_max_length(100);
+	text_normalizationLayerNormalizeVariance.set_text("0");
+	text_normalizationLayerNormalizeVariance.select_region(0, text_normalizationLayerNormalizeVariance.get_text_length());
+	m_grid_normalizationLayerType.attach(text_normalizationLayerNormalizeVariance,2,11,1,1);	
+	text_normalizationLayerNormalizeVariance.show();
+
+	label_normalizationLayerEps.set_text("Inner Parameter - eps: ");
+	label_normalizationLayerEps.set_line_wrap();
+	label_normalizationLayerEps.set_justify(Gtk::JUSTIFY_FILL);
+	m_grid_normalizationLayerType.attach(label_normalizationLayerEps,0,12,2,1);
+	label_normalizationLayerEps.show();
+
+	text_normalizationLayerEps.set_max_length(100);
+	text_normalizationLayerEps.set_text("100");
+	text_normalizationLayerEps.select_region(0, text_normalizationLayerEps.get_text_length());
+	m_grid_normalizationLayerType.attach(text_normalizationLayerEps,2,12,1,1);	
+	text_normalizationLayerEps.show();
+
 
 	m_sw_normalizationLayerType.add(m_grid_normalizationLayerType);
 
@@ -1323,6 +1486,66 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 	else if(data == "normalizationLayerType")
 	{
 		showWindow_normalizationLayerType(normalizationLayerTypeData);
+	}
+	else if(data == "setNormalizationParameters")
+	{
+		normalizationLayerTypeMatter = "";
+		if(normalizationLayerTypeData == "BatchNorm" or normalizationLayerTypeData == "")
+		{ 
+			normalizationLayerTypeMatter = "layer{";
+			normalizationLayerTypeMatter += "\n\tbottom: \"" +  text_normalizationLayerBottom.get_text() + "\"";
+			normalizationLayerTypeMatter += "\n\ttop: \"" + text_normalizationLayerTop.get_text() + "\"";
+			normalizationLayerTypeMatter += "\n\tname: \"" + text_normalizationLayerName.get_text() + "\"";
+			if(normalizationLayerTypeData == "")
+				normalizationLayerTypeData = "BatchNorm";
+			normalizationLayerTypeMatter += "\n\ttype: \"" + normalizationLayerTypeData + "\"";
+			normalizationLayerTypeMatter += "\n}\n";
+		}
+		else if(normalizationLayerTypeData == "LRN")
+		{ 
+			normalizationLayerTypeMatter = "layer{";
+			normalizationLayerTypeMatter += "\n\tbottom: \"" +  text_normalizationLayerBottom.get_text() + "\"";
+			normalizationLayerTypeMatter += "\n\ttop: \"" + text_normalizationLayerTop.get_text() + "\"";
+			normalizationLayerTypeMatter += "\n\tname: \"" + text_normalizationLayerName.get_text() + "\"";
+			normalizationLayerTypeMatter += "\n\ttype: \"" + normalizationLayerTypeData + "\"";
+			normalizationLayerTypeMatter += "\n\tlrn_param{";
+			normalizationLayerTypeMatter += "\n\t\tlocal_size: " + text_normalizationLayerlocalSize.get_text();
+			normalizationLayerTypeMatter += "\n\t\talpha: " + text_normalizationLayerAlpha.get_text();
+			normalizationLayerTypeMatter += "\n\t\tbeta: " + text_normalizationLayerBeta.get_text();
+			normalizationLayerTypeMatter += "\n\t\tk: " + text_normalizationLayerK.get_text();
+			if(rbutton_normalizationLayerLRNWithin.get_active() == 1)
+				normalizationLayerTypeMatter += "\n\t\tnorm_region: WITHIN_CHANNEL";
+			else 
+				normalizationLayerTypeMatter += "\n\t\tnorm_region: ACROSS_CHANNEL";
+			normalizationLayerTypeMatter += "\n\t}";
+			normalizationLayerTypeMatter += "\n}\n";
+		}
+		else if(normalizationLayerTypeData == "MVN")
+		{ 
+			normalizationLayerTypeMatter = "layer{";
+			normalizationLayerTypeMatter += "\n\tbottom: \"" +  text_normalizationLayerBottom.get_text() + "\"";
+			normalizationLayerTypeMatter += "\n\ttop: \"" + text_normalizationLayerTop.get_text() + "\"";
+			normalizationLayerTypeMatter += "\n\tname: \"" + text_normalizationLayerName.get_text() + "\"";
+			normalizationLayerTypeMatter += "\n\ttype: \"" + normalizationLayerTypeData + "\"";
+			normalizationLayerTypeMatter += "\n\tmvn_param{";
+			normalizationLayerTypeMatter += "\n\t\tacross_channels: " + text_normalizationLayerAcrossChannel.get_text();
+			normalizationLayerTypeMatter += "\n\t\tnormalize_variance: " + text_normalizationLayerNormalizeVariance.get_text();
+			normalizationLayerTypeMatter += "\n\t\teps: " + text_normalizationLayerEps.get_text();
+			normalizationLayerTypeMatter += "\n\t}";
+			normalizationLayerTypeMatter += "\n}\n";
+		}
+		if(numLayers == 0)
+		{
+			initializeLayer(headLayer,normalizationLayerTypeMatter);
+			numLayers++;
+			fullCnnLayers.push_back(normalizationLayerTypeMatter);
+		}
+		else
+		{
+			appendLayer(headLayer,normalizationLayerTypeMatter);
+			numLayers++;
+			fullCnnLayers.push_back(normalizationLayerTypeMatter);
+		}
 	}
 	else if(data == "addMoreLayer3")
 	{
