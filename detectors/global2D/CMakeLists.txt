@@ -21,11 +21,12 @@ if(build)
         "detection/ODHOGDetector.h"
         "detection/ODCascadeDetector.h"
 	"detection/ODConvClassification.h"
+	"localization/ODSelectiveSearchBase.h"
+	"localization/ODSelectiveSearchModel.h"
 
         "training/ODHOGTrainer.h"
 	"training/ODConvTrainer.h"
 	"training/solver.h"
-	"training/network.h"
         )
 
     set(impl_incs
@@ -36,10 +37,11 @@ if(build)
         "detection/ODHOGDetector.cpp"
         "detection/ODCascadeDetector.cpp"
 	"detection/ODConvClassification.cpp"
+	"localization/ODSelectiveSearchBase.cpp"
+	"localization/ODSelectiveSearchModel.cpp"
         "training/ODHOGTrainer.cpp"
 	"training/ODConvTrainer.cpp"
 	"training/solver.cpp"
-	"training/network.cpp"
         )
 
 
