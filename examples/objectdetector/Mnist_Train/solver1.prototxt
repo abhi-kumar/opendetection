@@ -1,0 +1,15 @@
+train_net: "../examples/objectdetector/Mnist_Train/train1.prototxt"
+#test_iter: 100
+#test_interval: 500
+base_lr: 0.01
+momentum: 0.9
+weight_decay: 0.0005
+# The learning rate policy
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+display: 1
+max_iter: 10
+snapshot: 5
+snapshot_prefix: "../examples/objectdetector/Mnist_Train/mnist_try1"
+solver_mode: CPU
