@@ -16,7 +16,7 @@
 #include <opencv2/ml.hpp>
 #include <common/utils/utils.h>
 
-
+#if(WITH_GPU)
 void convertToUnsignedSiftGPU(cv::Mat const &cv_des, vector<unsigned char> &siftgpu_des)
 {
   int totdes = cv_des.rows * 128;
@@ -43,13 +43,13 @@ void convertToDmatch(int siftgpu_matches[][2], int num_match, vector<cv::DMatch>
     cv_matches[i].queryIdx = siftgpu_matches[i][1];
   }
 }
-
+#endif
 
 void RobustMatcher::instantiateMatcher(Model const &model, bool use_gpu)
 {
 
   if (use_gpu_ == true) {
-
+    #if(WITH_GPU)
     //####GPU
 
     //1. for SIFT
@@ -57,7 +57,7 @@ void RobustMatcher::instantiateMatcher(Model const &model, bool use_gpu)
     cv::cuda::GpuMat train_descriptors(model.get_descriptors());
     matcher_gpu_->add(std::vector<cv::cuda::GpuMat>(1, train_descriptors));
     cout << "GPU matcher instantiated ..." << endl;
-
+    #endif
   }
   else
   {
@@ -198,6 +198,7 @@ void RobustMatcher::match(const cv::Mat & descriptors_frame, const cv::Mat &desc
 
   if (use_gpu_)
   {
+    #if(WITH_GPU)
     matcher_gpu_->knnMatch(cv::cuda::GpuMat(descriptors_frame), matches, 2); // return 2 nearest neighbours
     ratioTest(matches);
     for ( std::vector<std::vector<cv::DMatch> >::iterator
@@ -205,6 +206,7 @@ void RobustMatcher::match(const cv::Mat & descriptors_frame, const cv::Mat &desc
     {
       if (!matchIterator->empty()) good_matches.push_back((*matchIterator)[0]);
     }
+    #endif
   }
   else
   {

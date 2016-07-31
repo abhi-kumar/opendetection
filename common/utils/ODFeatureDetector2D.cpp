@@ -12,9 +12,9 @@ namespace od
   ODFeatureDetector2D::ODFeatureDetector2D(string type, bool use_gpu)
   {
     mode_ = SIFT; //by default it is SIFT
-
+   
     if(use_gpu) {
-
+	#if(WITH_GPU)
 
       //##########GPU VERSION
 
@@ -32,6 +32,7 @@ namespace od
         if(sift_gpu_->CreateContextGL() != SiftGPU::SIFTGPU_FULL_SUPPORTED)
           cout << "FATAL ERROR cannot create SIFTGPU context";
       }
+	#endif
     } else {
 
       //########CPU VERSIONS
@@ -53,14 +54,16 @@ namespace od
   void ODFeatureDetector2D::computeKeypointsAndDescriptors(cv::Mat const &image, cv::Mat &descriptors, vector<cv::KeyPoint> &keypoints)
   {
     if(mode_ == SIFT_GPU) {
+      #if(WITH_GPU)
       findSiftGPUDescriptors1(image, descriptors, keypoints);
+      #endif
     } else {
       feature_detector_->detect(image, keypoints);
       feature_detector_->compute(image, keypoints, descriptors);
     }
     //viewImage(image, keypoints);
   }
-
+  #if(WITH_GPU)
   void CVMatToSiftGPU(const cv::Mat &image, unsigned char *siftImage, cv::Mat &grey)
   {
     siftImage = (unsigned char *) malloc(image.rows * image.cols);
@@ -182,14 +185,16 @@ namespace od
     }
     cv::Mat image = cv::imread(image_name);
   }
-
+  #endif
   void ODFeatureDetector2D::computeAndSave(cv::Mat const &image, std::string const path)
   {
     cv::Mat descriptors;
     vector<cv::KeyPoint> keypoints;
     if(mode_ == SIFT_GPU) {
+      #if(WITH_GPU)
       findSiftGPUDescriptors1(image, descriptors, keypoints);
       sift_gpu_->SaveSIFT(path.c_str());
+      #endif
     } else {
       //DO NOTHING! IMPLEMENT LATER
 

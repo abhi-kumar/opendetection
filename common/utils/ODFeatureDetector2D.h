@@ -11,9 +11,11 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <opencv2/features2d/features2d.hpp>
 #include <opencv2/xfeatures2d.hpp>
-#include "SiftGPU.h"
 
+#if(WITH_GPU)
+#include "SiftGPU.h"
 #include <opencv2/cudafeatures2d.hpp>
+#endif
 
 namespace od
 {
@@ -43,8 +45,11 @@ namespace od
       } else if(type == SURF) {
         feature_detector_ = cv::xfeatures2d::SURF::create();
       } else if(type == ORB_GPU) {
+        #if(WITH_GPU)
         feature_detector_ = cv::cuda::ORB::create();
-      } else if(type == SIFT_GPU) {
+	#endif      
+	} else if(type == SIFT_GPU) {
+	#if(WITH_GPU)
         sift_gpu_ = new SiftGPU;
         //char * argv[] = {(char *)"-fo", (char *)"-1",  (char *)"-v", (char *)"1"};
         char *argv[] = {(char *) "-fo", (char *) "-1", (char *) "-v", (char *) "3", (char *) "-cuda"};
@@ -52,26 +57,29 @@ namespace od
         sift_gpu_->ParseParam(argc, argv);
         if(sift_gpu_->CreateContextGL() != SiftGPU::SIFTGPU_FULL_SUPPORTED)
           std::cout << "FATAL ERROR cannot create SIFTGPU context";
+	#endif
       }
     }
 
     //always return Opencv type keypoints
     void computeKeypointsAndDescriptors(cv::Mat const &image, cv::Mat &descriptors, std::vector<cv::KeyPoint> &keypoints);
-
+    #if(WITH_GPU)
     void findSiftGPUDescriptors(char const *image_name, cv::Mat &descriptors, std::vector<cv::KeyPoint> &keypoints);
 
     void findSiftGPUDescriptors(cv::Mat const &image, cv::Mat &descriptors, std::vector<cv::KeyPoint> &keypoints);
-
+    #endif
     void computeAndSave(cv::Mat const &image, std::string const path);
 
   private:
 
     cv::Ptr<cv::FeatureDetector> feature_detector_;
+    #if(WITH_GPU)
     cv::Ptr<SiftGPU> sift_gpu_;
 
 
     void findSiftGPUDescriptors1(cv::Mat const &image, cv::Mat &descriptors, std::vector<cv::KeyPoint> &keypoints);
-  };
+    #endif	 
+ };
 
 }
 
