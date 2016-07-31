@@ -1,6 +1,5 @@
 #include "detectors/global2D/localization/ODSelectiveSearchBase.h"
 #include "detectors/global2D/localization/ODSelectiveSearchModel.h"
-#include "common/utils/ODFrameGenerator.h"
 
 #include "common/pipeline/ObjectDetector.h"
 #include "common/pipeline/ODDetection.h"
