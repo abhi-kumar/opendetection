@@ -13,7 +13,6 @@ void help();
 
 int main(int argc, char **argv)
 {
-	Caffe::set_mode(Caffe::CPU);
 	if (argc != 4) 
 	{
 		help();	

@@ -78,7 +78,12 @@ namespace od
 
 		void ODConvClassification::classify()
 		{
+			#if(WITH_GPU)
+			Caffe::SetDevice(0);
+			Caffe::set_mode(Caffe::GPU);
+			#else
 			Caffe::set_mode(Caffe::CPU);
+			#endif
 			Net<float>  net(networkFileLocation, TEST);
 			net.CopyTrainedLayersFrom(weightModelFileLoaction); 
 			

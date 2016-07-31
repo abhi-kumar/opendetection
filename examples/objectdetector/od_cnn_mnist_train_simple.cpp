@@ -11,7 +11,6 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-	Caffe::set_mode(Caffe::CPU);
 	od::g2d::ODConvTrainer *mnist_trainer = new od::g2d::ODConvTrainer("","");
 	mnist_trainer->setSolverLocation(argv[1]);
 	mnist_trainer->startTraining();

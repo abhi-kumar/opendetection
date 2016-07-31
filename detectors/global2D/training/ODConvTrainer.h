@@ -20,6 +20,7 @@
 #include "caffe/sgd_solvers.hpp"
 
 #include "solver.h"
+#include "network.h"
 
 using namespace caffe;
 using namespace std;
@@ -39,6 +40,7 @@ namespace od
 				void setSolverLocation(string location);
 				void setSolverProperties(int argc, char *argv[]);
 				void startTraining();
+				void createCustomNetwork(int argc, char *argv[]);
 
 			private:
 				string solverLocation;

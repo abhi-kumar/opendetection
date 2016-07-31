@@ -26,10 +26,23 @@ namespace od
 			app->run(solverProperties);
 			ODConvTrainer::solverLocation = solverProperties.solverFileName;
 		}
+		
+		void ODConvTrainer::createCustomNetwork(int argc, char *argv[])
+		{
+			auto app = Gtk::Application::create(argc, argv, "org.gtkmm.example");
+			NetworkCreator networkCreator;
+			networkCreator.set_default_geometry (10000, 10000);
+			app->run(networkCreator);
+		}
 
 		void ODConvTrainer::startTraining()
 		{
+			#if(WITH_GPU)
+			Caffe::SetDevice(0);
+			Caffe::set_mode(Caffe::GPU);
+			#else
 			Caffe::set_mode(Caffe::CPU);
+			#endif
 			SGDSolver<float> s(solverLocation);
 			s.Solve();
 		}

@@ -27,6 +27,7 @@ if(build)
         "training/ODHOGTrainer.h"
 	"training/ODConvTrainer.h"
 	"training/solver.h"
+	"training/network.h"
         )
 
     set(impl_incs
@@ -42,6 +43,7 @@ if(build)
         "training/ODHOGTrainer.cpp"
 	"training/ODConvTrainer.cpp"
 	"training/solver.cpp"
+	"training/network.cpp"
         )
 
 
@@ -51,6 +53,11 @@ if(build)
     if(SUBSYS_DEPS)
       target_link_libraries("${LIB_NAME}" ${SUBSYS_DEPS}  ${Caffe_LIBRARIES} ${OpenCV_LIBS} ${GTKMM_LIBRARIES_3})
     endif(SUBSYS_DEPS)
+
+    if (WITH_GPU)
+      target_compile_definitions("${LIB_NAME}" PUBLIC WITH_GPU=${WITH_GPU})
+    endif()
+
 
     #PCL_MAKE_PKGCONFIG("${LIB_NAME}" "${SUBSYS_NAME}" "${SUBSYS_DESC}" "${SUBSYS_DEPS}" "" "" "" "")
 
