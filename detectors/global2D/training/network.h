@@ -68,6 +68,7 @@ class NetworkCreator : public Gtk::Window
 					button_addMoreLayer4,
 					button_setLossParameters,
 					button_addMoreLayer5,
+					button_setExtraParameters,
 					button_saveFile;
 		Gtk::Entry 		text_networkFileName,
 					text_activationLayerTop,
@@ -113,8 +114,22 @@ class NetworkCreator : public Gtk::Window
 					text_lossLayerTop,
 					text_lossLayerBottom1,
 					text_lossLayerBottom2,
+					text_lossLayerBottom3,
 					text_lossLayerName,
-					text_lossLayerNormalize;
+					text_lossLayerNormalize,
+					text_extraLayerTop1,
+					text_extraLayerTop2,
+					text_extraLayerBottom1,
+					text_extraLayerBottom2,
+					text_extraLayerName,
+					text_extraLayerTopK,
+					text_extraLayerScale,
+					text_extraLayerNewHeight,
+					text_extraLayerNewWidth,
+					text_extraLayerCropSize,
+					text_extraLayerMeanFile,
+					text_extraLayerSource,
+					text_extraLayerBatchSize;
 		Gtk::Label 		label_networkFileName,
 					label_activationLayerType,
 					label_criticalLayerType,
@@ -173,9 +188,27 @@ class NetworkCreator : public Gtk::Window
 					label_lossLayerTop,
 					label_lossLayerBottom1,
 					label_lossLayerBottom2,
+					label_lossLayerBottom3,
 					label_lossLayerName,
 					label_lossLayerNormalize,
-					label_lossLayerNormalization;
+					label_lossLayerNormalization,
+					label_lossLayerNorm,
+					label_extraLayerTop1,
+					label_extraLayerTop2,
+					label_extraLayerBottom1,
+					label_extraLayerBottom2,
+					label_extraLayerName,
+					label_extraLayerTopK,
+					label_extraLayerOutMaxVal,
+					label_extraLayerPhase,
+					label_extraLayerScale,
+					label_extraLayerNewHeight,
+					label_extraLayerNewWidth,
+					label_extraLayerCropSize,
+					label_extraLayerMeanFile,
+					label_extraLayerSource,
+					label_extraLayerBatchSize,
+					label_extraLayerBackend;
 		Gtk::ComboBox 		combo_activationLayerType,
 					combo_criticalLayerType,
 					combo_normalizationLayerType,
@@ -194,8 +227,19 @@ class NetworkCreator : public Gtk::Window
 					rbutton_criticalLayerWeightFillerMSRAIn, rbutton_criticalLayerWeightFillerMSRAOut,
 					rbutton_criticalLayerWeightFillerMSRAAvg,
 					rbutton_criticalLayerPoolMax, rbutton_criticalLayerPoolAve,
-					rbutton_normalizationLayerLRNWithin, rbutton_normalizationLayerLRNAcross;
-		
+					rbutton_normalizationLayerLRNWithin, rbutton_normalizationLayerLRNAcross,
+					rbutton_lossLayerFull, rbutton_lossLayerValid, rbutton_lossLayerBatch,
+					rbutton_lossLayerL1, rbutton_lossLayerL2,
+					rbutton_extraLayerOutMaxValTrue, rbutton_extraLayerOutMaxValFalse,
+					rbutton_extraLayerTrain, rbutton_extraLayerTest,
+					rbutton_extraLayerScaleYes, rbutton_extraLayerScaleNo,
+					rbutton_extraLayerNewHeightYes, rbutton_extraLayerNewHeightNo,
+					rbutton_extraLayerNewWidthYes, rbutton_extraLayerNewWidthNo,
+					rbutton_extraLayerCropSizeYes, rbutton_extraLayerCropSizeNo,
+					rbutton_extraLayerMeanFileYes, rbutton_extraLayerMeanFileNo,
+					rbutton_extraLayerLMDB, rbutton_extraLayerLEVELDB;
+					
+
 
 		//Tree model columns:
 		class ModelColumns : public Gtk::TreeModel::ColumnRecord
