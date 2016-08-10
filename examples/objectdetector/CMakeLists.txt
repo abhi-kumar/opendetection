@@ -66,3 +66,7 @@ OD_ADD_EXAMPLE(od_cnn_network_design FILES od_cnn_network_design.cpp
 
 OD_ADD_EXAMPLE(od_localize_selective_search FILES od_localize_selective_search.cpp
                 LINK_WITH od_common od_global_image_detector)
+
+
+OD_ADD_EXAMPLE(od_cnn_aam_classification_python_mode FILES od_cnn_aam_classification_python_mode.cpp
+                LINK_WITH od_common od_global_image_detector)
