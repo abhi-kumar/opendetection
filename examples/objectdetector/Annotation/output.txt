@@ -1,0 +1,2 @@
+/home/abhi/Desktop/Thesis/GSOC/target2/opendetection/examples/objectdetector/Annotation/Images/sample2.ppm 0 622 463 745 580 
+/home/abhi/Desktop/Thesis/GSOC/target2/opendetection/examples/objectdetector/Annotation/Images/sample1.png 0 881 353 1122 545 0 421 321 483 382 1 190 253 247 460 

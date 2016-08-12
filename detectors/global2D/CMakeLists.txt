@@ -28,6 +28,8 @@ if(build)
 	"training/ODConvTrainer.h"
 	"training/solver.h"
 	"training/network.h"
+	"annotation/ODAnnotation.h"
+	"annotation/ODAnnotator.h"
         )
 
     set(impl_incs
@@ -44,6 +46,8 @@ if(build)
 	"training/ODConvTrainer.cpp"
 	"training/solver.cpp"
 	"training/network.cpp"
+	"annotation/ODAnnotator.cpp"
+	"annotation/ODAnnotation.cpp"
         )
 
 

@@ -70,3 +70,8 @@ OD_ADD_EXAMPLE(od_localize_selective_search FILES od_localize_selective_search.c
 
 OD_ADD_EXAMPLE(od_cnn_aam_classification_python_mode FILES od_cnn_aam_classification_python_mode.cpp
                 LINK_WITH od_common od_global_image_detector)
+
+
+OD_ADD_EXAMPLE(od_image_annotator FILES od_image_annotator.cpp
+                LINK_WITH od_common od_global_image_detector)
+
