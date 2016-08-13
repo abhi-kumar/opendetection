@@ -502,6 +502,11 @@ NetworkCreator::NetworkCreator():
 	row_extraLayerType[column_extraLayerType.m_col_name] = "Data";
 	row_extraLayerType[column_extraLayerType.m_col_extra] = "Data layer in LMDB/LEVELDB format";
 
+	row_extraLayerType = *(ref_extraLayerType->append());
+	row_extraLayerType[column_extraLayerType.m_col_id] = 5;
+	row_extraLayerType[column_extraLayerType.m_col_name] = "HDF5Data";
+	row_extraLayerType[column_extraLayerType.m_col_extra] = "Data layer in HDF5 format";
+
 	combo_extraLayerType.pack_start(column_extraLayerType.m_col_id);
 	combo_extraLayerType.pack_start(column_extraLayerType.m_col_name);
 	combo_extraLayerType.set_cell_data_func(cell_extraLayerType,  sigc::mem_fun(*this, &NetworkCreator::on_cell_data_extra));
@@ -2168,7 +2173,7 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 			else
 				extraLayerTypeMatter += "\n\t\t#mean_file: ";			 
 			extraLayerTypeMatter += "\n\t}";
-			extraLayerTypeMatter += "\n\timage_data_param{";
+			extraLayerTypeMatter += "\n\tdata_param{";
 			extraLayerTypeMatter += "\n\t\tsource: \"" + text_extraLayerSource.get_text() + "\"";
 			extraLayerTypeMatter += "\n\t\tbatch_size: " + text_extraLayerBatchSize.get_text();
 			if(rbutton_extraLayerLMDB.get_active() == 1)
@@ -2177,6 +2182,25 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 				extraLayerTypeMatter += "\n\t\tbackend: LEVELDB";
 			extraLayerTypeMatter += "\n\t}";
 			extraLayerTypeMatter += "\n}\n";				
+		}
+		else if(extraLayerTypeData == "HDF5Data")
+		{
+			extraLayerTypeMatter = "layer{";
+			extraLayerTypeMatter += "\n\tname: \"" + text_extraLayerName.get_text() + "\"";
+			extraLayerTypeMatter += "\n\ttop: \"" + text_extraLayerTop1.get_text() + "\"";
+			extraLayerTypeMatter += "\n\ttop: \"" + text_extraLayerTop2.get_text() + "\"";
+			extraLayerTypeMatter += "\n\ttype: \"" + extraLayerTypeData + "\"";
+			extraLayerTypeMatter += "\n\tinclude{";
+			if(rbutton_extraLayerTrain.get_active() == 1)
+				extraLayerTypeMatter += "\n\t\tphase: TRAIN";
+			else
+				extraLayerTypeMatter += "\n\t\tphase: TEST";
+			extraLayerTypeMatter += "\n\t}";
+			extraLayerTypeMatter += "\n\tdata_param{";
+			extraLayerTypeMatter += "\n\t\tsource: \"" + text_extraLayerSource.get_text() + "\"";
+			extraLayerTypeMatter += "\n\t\tbatch_size: " + text_extraLayerBatchSize.get_text();
+			extraLayerTypeMatter += "\n\t}";
+			extraLayerTypeMatter += "\n}\n";
 		}	
 		if(numLayers == 0)
 		{

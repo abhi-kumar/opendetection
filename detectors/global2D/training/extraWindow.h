@@ -11,7 +11,7 @@ void NetworkCreator::showWindow_extraLayerType(Glib::ustring data)
 
 	if(data == "" or data == "ArgMax")
 		title_extraLayerType.set_text("Set the Properties of Loss Layer type: ArgMax");
-	else if(data == "BNLL" or data == "Eltwise" or data == "ImageData" or data == "Data")
+	else if(data == "BNLL" or data == "Eltwise" or data == "ImageData" or data == "Data" or data == "HDF5Data")
 		title_extraLayerType.set_text("Set the Properties of Loss Layer type: " + data);
 	else
 		title_extraLayerType.set_text("Will be updated soon");
@@ -787,6 +787,134 @@ void NetworkCreator::showWindow_extraLayerType(Glib::ustring data)
 		rbutton_extraLayerLMDB.show();
 //		m_grid_extraLayerType.attach(rbutton_extraLayerLEVELDB,3,16,1,1);
 		rbutton_extraLayerLEVELDB.show();
+
+		button_setExtraParameters.show();
+	}
+	else if(data == "HDF5Data")
+	{
+		button_setExtraParameters.hide();
+		label_extraLayerBottom1.hide();
+		label_extraLayerTop1.hide();
+		label_extraLayerTop2.hide();
+		label_extraLayerName.hide();
+		text_extraLayerBottom1.hide();
+		text_extraLayerTop1.hide();
+		text_extraLayerTop2.hide();
+		text_extraLayerName.hide();
+		text_extraLayerTopK.hide();
+		label_extraLayerTopK.hide();
+		label_extraLayerOutMaxVal.hide();
+		rbutton_extraLayerOutMaxValTrue.hide();
+		rbutton_extraLayerOutMaxValFalse.hide();
+		label_extraLayerBottom2.hide();
+		text_extraLayerBottom2.hide();
+		label_extraLayerPhase.hide();
+		rbutton_extraLayerTrain.hide();
+		rbutton_extraLayerTest.hide();
+		label_extraLayerScale.hide();
+		label_extraLayerNewHeight.hide();
+		label_extraLayerNewWidth.hide();
+		label_extraLayerCropSize.hide();
+		label_extraLayerMeanFile.hide();
+		rbutton_extraLayerScaleYes.hide();
+		rbutton_extraLayerScaleNo.hide();
+		rbutton_extraLayerNewHeightYes.hide();
+		rbutton_extraLayerNewHeightNo.hide();
+		rbutton_extraLayerNewWidthYes.hide();
+		rbutton_extraLayerNewWidthNo.hide();
+		rbutton_extraLayerCropSizeYes.hide();
+		rbutton_extraLayerCropSizeNo.hide();
+		rbutton_extraLayerMeanFileYes.hide();
+		rbutton_extraLayerMeanFileNo.hide();
+		text_extraLayerScale.hide();
+		text_extraLayerNewHeight.hide();
+		text_extraLayerNewWidth.hide();
+		text_extraLayerCropSize.hide();
+		text_extraLayerMeanFile.hide();
+		label_extraLayerSource.hide();
+		label_extraLayerBatchSize.hide();
+		text_extraLayerSource.hide();
+		text_extraLayerBatchSize.hide();
+		label_extraLayerBackend.hide();
+		rbutton_extraLayerLMDB.hide();
+		rbutton_extraLayerLEVELDB.hide();
+
+
+		label_extraLayerTop1.set_text("Top1 Layer Name: ");
+		label_extraLayerTop1.set_line_wrap();
+		label_extraLayerTop1.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_extraLayerType.attach(label_extraLayerTop1,0,2,2,1);
+		label_extraLayerTop1.show();
+
+		text_extraLayerTop1.set_max_length(100);
+		text_extraLayerTop1.set_text("");
+		text_extraLayerTop1.select_region(0, text_extraLayerTop1.get_text_length());
+//		m_grid_extraLayerType.attach(text_extraLayerTop1,2,2,1,1);	
+		text_extraLayerTop1.show();
+
+		label_extraLayerTop2.set_text("Top2 Layer Name: ");
+		label_extraLayerTop2.set_line_wrap();
+		label_extraLayerTop2.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_extraLayerType.attach(label_extraLayerTop2,0,4,2,1);
+		label_extraLayerTop2.show();
+
+		text_extraLayerTop2.set_max_length(100);
+		text_extraLayerTop2.set_text("");
+		text_extraLayerTop2.select_region(0, text_extraLayerTop2.get_text_length());
+//		m_grid_extraLayerType.attach(text_extraLayerTop2,2,4,1,1);	
+		text_extraLayerTop2.show();
+
+		label_extraLayerName.set_text("Current Layer Name: ");
+		label_extraLayerName.set_line_wrap();
+		label_extraLayerName.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_extraLayerType.attach(label_extraLayerName,0,3,2,1);
+		label_extraLayerName.show();
+
+		text_extraLayerName.set_max_length(100);
+		text_extraLayerName.set_text("");
+		text_extraLayerName.select_region(0, text_extraLayerName.get_text_length());
+//		m_grid_extraLayerType.attach(text_extraLayerName,2,3,1,1);	
+		text_extraLayerName.show();
+
+		label_extraLayerPhase.set_text("phase: ");
+		label_extraLayerPhase.set_line_wrap();
+		label_extraLayerPhase.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_extraLayerType.attach(label_extraLayerPhase,0,8,2,1);
+		label_extraLayerPhase.show();
+
+//		Gtk::RadioButton::Group group9 = rbutton_extraLayerTrain.get_group();
+//		rbutton_extraLayerTest.set_group(group9);
+//	 	rbutton_extraLayerTrain.set_active();
+//		m_grid_extraLayerType.attach(rbutton_extraLayerTrain,2,8,1,1);
+		rbutton_extraLayerTrain.show();
+//		m_grid_extraLayerType.attach(rbutton_extraLayerTest,3,8,1,1);
+		rbutton_extraLayerTest.show();
+
+		label_extraLayerSource.set_text("source: ");
+		label_extraLayerSource.set_line_wrap();
+		label_extraLayerSource.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_extraLayerType.attach(label_extraLayerSource,0,14,2,1);
+		label_extraLayerSource.show();
+
+		text_extraLayerSource.set_max_length(100);
+		text_extraLayerSource.set_text("");
+		text_extraLayerSource.select_region(0, text_extraLayerSource.get_text_length());
+//		m_grid_extraLayerType.attach(text_extraLayerSource,2,14,1,1);	
+		text_extraLayerSource.show();
+
+		label_extraLayerBatchSize.set_text("batch_size: ");
+		label_extraLayerBatchSize.set_line_wrap();
+		label_extraLayerBatchSize.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_extraLayerType.attach(label_extraLayerBatchSize,0,15,2,1);
+		label_extraLayerBatchSize.show();
+
+		text_extraLayerBatchSize.set_max_length(100);
+		text_extraLayerBatchSize.set_text("");
+		text_extraLayerBatchSize.select_region(0, text_extraLayerBatchSize.get_text_length());
+//		m_grid_extraLayerType.attach(text_extraLayerBatchSize,2,15,1,1);	
+		text_extraLayerBatchSize.show();
+
+	
 
 		button_setExtraParameters.show();
 	}
