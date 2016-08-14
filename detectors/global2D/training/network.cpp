@@ -200,12 +200,14 @@ NetworkCreator::NetworkCreator():
 	rbutton_extraLayerLMDB("LMBD"), rbutton_extraLayerLEVELDB("LEVELDB"),
 
 	button_displayCnnLayers("Display the Network"),
-	button_editMore("Add more layers"),
+	button_editMore("Add more layers at end"),
 	box_fullCnnLayerMatter(Gtk::ORIENTATION_VERTICAL),
 	button_deleteLayerAtEnd("Delete Layer at the end"),
 	button_deleteSelectedLayer("Delete the Selected Layer"),
+	button_appendLayerAfter("Add Layer After Selected Layer"),
 	button_saveFile("Save File")
 {
+	appendStatus = false;
 	numLayers = 0;
 	set_title("Network Creator");
 	set_border_width(10);
@@ -1579,10 +1581,15 @@ NetworkCreator::NetworkCreator():
 	
 	buttonBox_fullCnnLayerMatter.pack_start(combo_currentLayers, Gtk::PACK_SHRINK);
 	combo_currentLayers.signal_changed().connect( sigc::mem_fun(*this, &NetworkCreator::on_combo_changed) );
+	
 	button_deleteSelectedLayer.signal_clicked().connect(sigc::bind<Glib::ustring>(
               sigc::mem_fun(*this, &NetworkCreator::on_button_clicked), "deleteSelectedLayer"));
 	buttonBox_fullCnnLayerMatter.pack_start(button_deleteSelectedLayer, Gtk::PACK_SHRINK);
 
+	
+	button_appendLayerAfter.signal_clicked().connect(sigc::bind<Glib::ustring>(
+              sigc::mem_fun(*this, &NetworkCreator::on_button_clicked), "appendLayerAfter"));
+	buttonBox_fullCnnLayerMatter.pack_start(button_appendLayerAfter, Gtk::PACK_SHRINK);
 }
 
 NetworkCreator::~NetworkCreator()
@@ -1675,10 +1682,31 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 		}
 		else
 		{
+/*
 			appendLayer(headLayer,activationLayerTypeMatter, text_activationLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(activationLayerTypeMatter);
 			fullCnnLayersName.push_back(text_activationLayerName.get_text());
+*/
+			if(appendStatus == false)
+			{
+				appendLayer(headLayer,activationLayerTypeMatter, text_activationLayerName.get_text());
+				numLayers++;
+				fullCnnLayers.push_back(activationLayerTypeMatter);
+				fullCnnLayersName.push_back(text_activationLayerName.get_text());
+			}
+			else
+			{
+				std::vector<Glib::ustring>::iterator it;
+				it = std::find(fullCnnLayersName.begin(), fullCnnLayersName.end(), currentLayersName);
+				int pos =  std::distance(fullCnnLayersName.begin(),it);
+				insertLayer(headLayer, pos, activationLayerTypeMatter, text_activationLayerName.get_text());
+				numLayers++;
+				fullCnnLayers.insert(fullCnnLayers.begin()+pos+1, activationLayerTypeMatter);
+				fullCnnLayersName.insert(fullCnnLayersName.begin()+pos+1, text_activationLayerName.get_text());
+//				fullCnnLayers.push_back(extraLayerTypeMatter);
+//				fullCnnLayersName.push_back(text_extraLayerName.get_text());
+			}
 		}	
 	}
 	else if(data == "displayCnnLayers")
@@ -1688,6 +1716,7 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 	}
 	else if(data == "editMore")
 	{
+		appendStatus = false;
 		showWindow_main();
 	}
 	else if(data == "deleteLayerAtEnd")
@@ -1983,10 +2012,31 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 		}
 		else
 		{
+/*
 			appendLayer(headLayer,criticalLayerTypeMatter, text_criticalLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(criticalLayerTypeMatter);
 			fullCnnLayersName.push_back(text_criticalLayerName.get_text());
+*/
+			if(appendStatus == false)
+			{
+				appendLayer(headLayer,criticalLayerTypeMatter, text_criticalLayerName.get_text());
+				numLayers++;
+				fullCnnLayers.push_back(criticalLayerTypeMatter);
+				fullCnnLayersName.push_back(text_criticalLayerName.get_text());
+			}
+			else
+			{
+				std::vector<Glib::ustring>::iterator it;
+				it = std::find(fullCnnLayersName.begin(), fullCnnLayersName.end(), currentLayersName);
+				int pos =  std::distance(fullCnnLayersName.begin(),it);
+				insertLayer(headLayer, pos, criticalLayerTypeMatter, text_criticalLayerName.get_text());
+				numLayers++;
+				fullCnnLayers.insert(fullCnnLayers.begin()+pos+1, criticalLayerTypeMatter);
+				fullCnnLayersName.insert(fullCnnLayersName.begin()+pos+1, text_criticalLayerName.get_text());
+//				fullCnnLayers.push_back(extraLayerTypeMatter);
+//				fullCnnLayersName.push_back(text_extraLayerName.get_text());
+			}
 		}
 	}
 	else if(data == "normalizationLayerType")
@@ -2049,10 +2099,31 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 		}
 		else
 		{
+/*
 			appendLayer(headLayer,normalizationLayerTypeMatter, text_normalizationLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(normalizationLayerTypeMatter);
 			fullCnnLayersName.push_back(text_normalizationLayerName.get_text());
+*/
+			if(appendStatus == false)
+			{
+				appendLayer(headLayer,normalizationLayerTypeMatter, text_normalizationLayerName.get_text());
+				numLayers++;
+				fullCnnLayers.push_back(normalizationLayerTypeMatter);
+				fullCnnLayersName.push_back(text_normalizationLayerName.get_text());
+			}
+			else
+			{
+				std::vector<Glib::ustring>::iterator it;
+				it = std::find(fullCnnLayersName.begin(), fullCnnLayersName.end(), currentLayersName);
+				int pos =  std::distance(fullCnnLayersName.begin(),it);
+				insertLayer(headLayer, pos, normalizationLayerTypeMatter, text_normalizationLayerName.get_text());
+				numLayers++;
+				fullCnnLayers.insert(fullCnnLayers.begin()+pos+1, normalizationLayerTypeMatter);
+				fullCnnLayersName.insert(fullCnnLayersName.begin()+pos+1, text_normalizationLayerName.get_text());
+//				fullCnnLayers.push_back(extraLayerTypeMatter);
+//				fullCnnLayersName.push_back(text_extraLayerName.get_text());
+			}
 		}
 	}
 	else if(data == "setLossParameters")
@@ -2134,10 +2205,31 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 		}
 		else
 		{
+/*
 			appendLayer(headLayer,lossLayerTypeMatter, text_lossLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(lossLayerTypeMatter);
 			fullCnnLayersName.push_back(text_lossLayerName.get_text());
+*/
+			if(appendStatus == false)
+			{
+				appendLayer(headLayer,lossLayerTypeMatter, text_lossLayerName.get_text());
+				numLayers++;
+				fullCnnLayers.push_back(lossLayerTypeMatter);
+				fullCnnLayersName.push_back(text_lossLayerName.get_text());
+			}
+			else
+			{
+				std::vector<Glib::ustring>::iterator it;
+				it = std::find(fullCnnLayersName.begin(), fullCnnLayersName.end(), currentLayersName);
+				int pos =  std::distance(fullCnnLayersName.begin(),it);
+				insertLayer(headLayer, pos, lossLayerTypeMatter, text_lossLayerName.get_text());
+				numLayers++;
+				fullCnnLayers.insert(fullCnnLayers.begin()+pos+1, lossLayerTypeMatter);
+				fullCnnLayersName.insert(fullCnnLayersName.begin()+pos+1, text_lossLayerName.get_text());
+//				fullCnnLayers.push_back(extraLayerTypeMatter);
+//				fullCnnLayersName.push_back(text_extraLayerName.get_text());
+			}
 		}
 
 	}
@@ -2291,10 +2383,27 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 		}
 		else
 		{
-			appendLayer(headLayer,extraLayerTypeMatter, text_extraLayerName.get_text());
-			numLayers++;
-			fullCnnLayers.push_back(extraLayerTypeMatter);
-			fullCnnLayersName.push_back(text_extraLayerName.get_text());
+			std::cout << "in here " << appendStatus << std::endl;
+			if(appendStatus == false)
+			{
+				
+				appendLayer(headLayer,extraLayerTypeMatter, text_extraLayerName.get_text());
+				numLayers++;
+				fullCnnLayers.push_back(extraLayerTypeMatter);
+				fullCnnLayersName.push_back(text_extraLayerName.get_text());
+			}
+			else
+			{
+				std::vector<Glib::ustring>::iterator it;
+				it = std::find(fullCnnLayersName.begin(), fullCnnLayersName.end(), currentLayersName);
+				int pos =  std::distance(fullCnnLayersName.begin(),it);
+				insertLayer(headLayer, pos, extraLayerTypeMatter, text_extraLayerName.get_text());
+				numLayers++;
+				fullCnnLayers.insert(fullCnnLayers.begin()+pos+1, extraLayerTypeMatter);
+				fullCnnLayersName.insert(fullCnnLayersName.begin()+pos+1, text_extraLayerName.get_text());
+//				fullCnnLayers.push_back(extraLayerTypeMatter);
+//				fullCnnLayersName.push_back(text_extraLayerName.get_text());
+			}
 		}
 	}
 	else if(data == "addMoreLayer3")
@@ -2315,6 +2424,11 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 	}
 	else if(data == "addMoreLayer5")
 	{
+		showWindow_main();
+	}
+	else if(data == "appendLayerAfter")
+	{
+		appendStatus = true;
 		showWindow_main();
 	}
 	else if(data == "saveFile")

@@ -72,6 +72,7 @@ class NetworkCreator : public Gtk::Window
 					button_addMoreLayer5,
 					button_setExtraParameters,
 					button_deleteSelectedLayer,
+					button_appendLayerAfter,
 					button_saveFile;
 		Gtk::Entry 		text_networkFileName,
 					text_activationLayerTop,
@@ -287,8 +288,9 @@ class NetworkCreator : public Gtk::Window
 		std::vector<Glib::ustring>	fullCnnLayers;
 		std::vector<Glib::ustring>	fullCnnLayersName;
 		Glib::ustring		currentLayersName;
+		bool			appendStatus;
 
 };
 
 
-#endif // GTKMM_EXAMPLE_NETWORK_H
+#endif // GTKMM_EXAMPLE_NETWORK_H		

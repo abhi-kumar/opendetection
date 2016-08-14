@@ -1,7 +1,39 @@
 #File generated using OpenDetection
 layer{
 	bottom: ""
+	bottom: ""
 	top: ""
-	name: "1"
-	type: "BatchNorm"
+	name: "a"
+	type: "SoftmaxWithLoss"
+	loss_param{
+		normalize:
+		normalization: FULL
+	}
+}
+layer{
+	bottom: ""
+	top: ""
+	name: "b"
+	type: "AbsVal"
+}
+layer{
+	bottom: ""
+	top: ""
+	name: "c"
+	type: "AbsVal"
+}
+layer{
+	bottom: ""
+	top: ""
+	name: "e"
+	type: "ArgMax"
+	argmax_param{
+		top_k: 
+	}
+}
+layer{
+	bottom: ""
+	top: ""
+	name: "d"
+	type: "AbsVal"
 }

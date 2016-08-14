@@ -34,6 +34,29 @@ void appendLayer(struct Node *headLayer, Glib::ustring data, Glib::ustring name)
 	}
 }
 
+void insertLayer(struct Node *headLayer, int pos, Glib::ustring data, Glib::ustring name){
+
+	Node *newLayer = new Node;
+	newLayer->data = data;
+	newLayer->name = name;
+	newLayer->nextLayer = NULL;
+
+	Node *currentLayer = headLayer;
+	int i = 0;
+	while(currentLayer)
+	{
+		if(i==pos)
+		{
+			newLayer->nextLayer = currentLayer->nextLayer;
+			currentLayer->nextLayer = newLayer;
+			return;
+		}
+		currentLayer = currentLayer->nextLayer;
+		i++;
+	}
+	
+}
+
 
 bool deleteLayer(struct Node **headLayer, Node *deleteLayer) 
 {
