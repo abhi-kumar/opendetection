@@ -47,8 +47,9 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		text_annotationLabel.hide();
 		button_saveMarkedMultiple.hide();
 		button_loadNextImage.hide();
+		button_saveCropMarkedMultiple.hide();
 
-		loadOriginalImage(data, 1);
+		loadOriginalImage(data, 0);
 		button_resetMarkings.show();
 		button_selectRoi.show();
 		button_loadAnotherImage.show();
@@ -84,9 +85,10 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		text_annotationLabel.hide();
 		button_saveMarkedMultiple.hide();
 		button_loadNextImage.hide();
+		button_saveCropMarkedMultiple.hide();
 
 
-		loadOriginalImage(data, 1);
+		loadOriginalImage(data, 0);
 		button_resetMarkings.show();
 		button_selectRoi.show();
 		button_loadAnotherImage.show();
@@ -113,16 +115,17 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		button_resetMarkings.hide();
 		button_selectRoi.hide();
 		button_saveMarked.hide();
-		button_saveCropMarked.hide();
 		button_loadAnotherImage.hide();
+		button_saveCropMarked.hide();
 		button_resetMarkingsCurrent.hide();
 		button_selectRoiCurrent.hide();
 		label_annotationLabel.hide();
 		text_annotationLabel.hide();
 		button_saveMarkedMultiple.hide();
 		button_loadNextImage.hide();
+		button_saveCropMarkedMultiple.hide();
 
-		loadOriginalImage(data, 1);
+		loadOriginalImage(data, 0);
 		button_resetMarkingsCurrent.show();
 	
 		label_annotationLabel.set_text("Give a label to ROI: ");
@@ -158,6 +161,59 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 
 		
 	}
+	else if(rbutton_cropMultipleBB.get_active() == 1 and file_folder == "file")
+	{
+		label_outputFile.hide();
+		text_outputFile.hide();
+		button_resetMarkings.hide();
+		button_selectRoi.hide();
+		button_saveMarked.hide();
+		button_loadAnotherImage.hide();
+		button_saveCropMarked.hide();
+		button_resetMarkingsCurrent.hide();
+		button_selectRoiCurrent.hide();
+		label_annotationLabel.hide();
+		text_annotationLabel.hide();
+		button_saveMarkedMultiple.hide();
+		button_loadNextImage.hide();
+		button_saveCropMarkedMultiple.hide();
+
+		loadOriginalImage(data, 0);
+		button_resetMarkingsCurrent.show();
+	
+		label_annotationLabel.set_text("Give a label to ROI: ");
+		label_annotationLabel.set_line_wrap();
+		label_annotationLabel.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_imageLoad.attach(label_annotationLabel,0,4,2,1);
+		label_annotationLabel.show();
+		
+
+		text_annotationLabel.set_max_length(100);
+		text_annotationLabel.set_text("0");
+		text_annotationLabel.select_region(0, text_annotationLabel.get_text_length());
+//		m_grid_imageLoad.attach(text_outputFile,2,4,1,1);	
+		text_annotationLabel.show();
+		
+		button_selectRoiCurrent.show();
+		button_loadAnotherImage.show();
+
+		label_outputFile.set_text("OutPut Text File Name: ");
+		label_outputFile.set_line_wrap();
+		label_outputFile.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_imageLoad.attach(label_outputFile,0,2,2,1);
+		label_outputFile.show();
+		
+
+		text_outputFile.set_max_length(100);
+		text_outputFile.set_text("../examples/objectdetector/Annotation/output.txt");
+		text_outputFile.select_region(0, text_outputFile.get_text_length());
+//		m_grid_imageLoad.attach(text_outputFile,2,2,1,1);	
+		text_outputFile.show();
+		
+		button_saveCropMarkedMultiple.show();
+
+		
+	}
 	else if(rbutton_markBB.get_active() == 1 and file_folder == "folder")
 	{
 		label_outputFile.hide();
@@ -173,6 +229,7 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		text_annotationLabel.hide();
 		button_saveMarkedMultiple.hide();
 		button_loadNextImage.hide();
+		button_saveCropMarkedMultiple.hide();
 
 		
 		DIR *dpdf;
@@ -194,7 +251,7 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		   	}
 		}
 		filename = imageFileNames[--imagesInFolder];
-		loadOriginalImage(filename, 1);
+		loadOriginalImage(filename, 0);
 
 		button_resetMarkings.show();
 		button_selectRoi.show();
@@ -232,6 +289,7 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		text_annotationLabel.hide();
 		button_saveMarkedMultiple.hide();
 		button_loadNextImage.hide();
+		button_saveCropMarkedMultiple.hide();
 
 		
 		DIR *dpdf;
@@ -253,7 +311,7 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		   	}
 		}
 		filename = imageFileNames[--imagesInFolder];
-		loadOriginalImage(filename, 1);
+		loadOriginalImage(filename, 0);
 
 		button_resetMarkings.show();
 		button_selectRoi.show();
@@ -292,6 +350,7 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		text_annotationLabel.hide();
 		button_saveMarkedMultiple.hide();
 		button_loadNextImage.hide();
+		button_saveCropMarkedMultiple.hide();
 
 		
 		DIR *dpdf;
@@ -313,7 +372,7 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		   	}
 		}
 		filename = imageFileNames[--imagesInFolder];
-		loadOriginalImage(filename, 1);
+		loadOriginalImage(filename, 0);
 
 		button_resetMarkingsCurrent.show();
 	
@@ -349,6 +408,79 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		
 		button_saveMarkedMultiple.show();
 	}
+	else if(rbutton_cropMultipleBB.get_active() == 1 and file_folder == "folder")
+	{
+		label_outputFile.hide();
+		text_outputFile.hide();
+		button_resetMarkings.hide();
+		button_selectRoi.hide();
+		button_saveMarked.hide();
+		button_loadAnotherImage.hide();
+		button_saveCropMarked.hide();
+		button_resetMarkingsCurrent.hide();
+		button_selectRoiCurrent.hide();
+		label_annotationLabel.hide();
+		text_annotationLabel.hide();
+		button_saveMarkedMultiple.hide();
+		button_loadNextImage.hide();
+		button_saveCropMarkedMultiple.hide();
+
+		
+		DIR *dpdf;
+		struct dirent *epdf;
+
+		dpdf = opendir(foldername.c_str());
+		if (dpdf != NULL)
+		{
+			while (epdf = readdir(dpdf))
+			{
+				string val = epdf->d_name;
+				if(val.length() > 3)
+				{
+					string fName = foldername + "/" + epdf->d_name;
+					cout << fName << endl; 
+					imageFileNames.push_back(fName); 
+					imagesInFolder++;
+				}
+		   	}
+		}
+		filename = imageFileNames[--imagesInFolder];
+		loadOriginalImage(filename, 0);
+
+		button_resetMarkingsCurrent.show();
+	
+		label_annotationLabel.set_text("Give a label to ROI: ");
+		label_annotationLabel.set_line_wrap();
+		label_annotationLabel.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_imageLoad.attach(label_annotationLabel,0,4,2,1);
+		label_annotationLabel.show();
+		
+
+		text_annotationLabel.set_max_length(100);
+		text_annotationLabel.set_text("0");
+		text_annotationLabel.select_region(0, text_annotationLabel.get_text_length());
+//		m_grid_imageLoad.attach(text_outputFile,2,4,1,1);	
+		text_annotationLabel.show();
+		
+		button_selectRoiCurrent.show();
+		button_loadAnotherImage.show();
+		button_loadNextImage.show();
+
+		label_outputFile.set_text("OutPut Text File Name: ");
+		label_outputFile.set_line_wrap();
+		label_outputFile.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_imageLoad.attach(label_outputFile,0,2,2,1);
+		label_outputFile.show();
+		
+
+		text_outputFile.set_max_length(100);
+		text_outputFile.set_text("../examples/objectdetector/Annotation/output.txt");
+		text_outputFile.select_region(0, text_outputFile.get_text_length());
+//		m_grid_imageLoad.attach(text_outputFile,2,2,1,1);	
+		text_outputFile.show();
+
+		button_saveCropMarkedMultiple.show();
+	}
 	else
 	{
 		label_outputFile.hide();
@@ -364,6 +496,7 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		text_annotationLabel.hide();
 		button_saveMarkedMultiple.hide();
 		button_loadNextImage.hide();
+		button_saveCropMarkedMultiple.hide();
 	}
 
 		

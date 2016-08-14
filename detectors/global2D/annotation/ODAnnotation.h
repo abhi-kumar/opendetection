@@ -83,10 +83,12 @@ class annotation : public Gtk::Window
 					button_selectRoiCurrent,
 					button_saveMarkedMultiple,
 					button_selectDatasetFolder,
+					button_saveCropMarkedMultiple,
 					button_loadNextImage,
 					button_quit;
 
-		Gtk::RadioButton	rbutton_markBB, rbutton_cropBB, rbutton_markBBWithLabel;
+		Gtk::RadioButton	rbutton_markBB, rbutton_cropBB, rbutton_markBBWithLabel,
+					rbutton_cropMultipleBB;
 
 		Gtk::Label		label_annotationType,
 					label_outputFile,

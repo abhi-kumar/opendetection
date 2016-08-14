@@ -6,8 +6,10 @@ annotation::annotation():
 	button_selectImageFileName("Select The Image Location"),
 	button_loadImage("Load the image"),
 	button_loadAnotherImage("Load Next Image from a different location"),
-	rbutton_markBB("Mark Single Bounding Box Points"), rbutton_cropBB("Mark Single Boing Box Points and Crop"),
-	rbutton_markBBWithLabel("Mark Multiple Bounding Boxes' Points with attached class labels"),
+	rbutton_markBB("Save points for a single Bounding Box per Image"), 
+	rbutton_cropBB("Save points and crop single Bounding Box per image"),
+	rbutton_markBBWithLabel("Save Multiple Bounding Boxes' Points with attached class labels"),
+	rbutton_cropMultipleBB("Save points and crop multiple Bounding Boxes per image with attached class labels"),
 	label_annotationType(""),
 	text_outputFile(),
 	label_outputFile(""),
@@ -19,6 +21,7 @@ annotation::annotation():
 	button_resetMarkingsCurrent("Reset the current Marking"),
 	button_selectRoiCurrent("Select the roi with mentioned label"),
 	button_saveMarkedMultiple("Save the ROI details with labels of all images into the stated file"),
+	button_saveCropMarkedMultiple("Save and crop the ROIs with labels of all images into the stated file"),
 	text_annotationLabel(),
 	label_annotationLabel(""),
 	button_selectDatasetFolder("Select the Dataset Folder"),
@@ -38,28 +41,31 @@ annotation::annotation():
 	
 	button_selectImageFileName.signal_clicked().connect(sigc::bind<Glib::ustring>(
               sigc::mem_fun(*this, &annotation::on_button_clicked), "selectImageFileName"));
-	m_grid1.attach(button_selectImageFileName,0,1,2,1);
+	m_grid1.attach(button_selectImageFileName,0,1,1,1);
 	button_selectImageFileName.show();
 
 	button_selectDatasetFolder.signal_clicked().connect(sigc::bind<Glib::ustring>(
               sigc::mem_fun(*this, &annotation::on_button_clicked), "selectDatasetFolder"));
-	m_grid1.attach(button_selectDatasetFolder,2,1,1,1);
+	m_grid1.attach(button_selectDatasetFolder,1,1,1,1);
 	button_selectDatasetFolder.show();
 
 	Gtk::RadioButton::Group group1 = rbutton_markBB.get_group();
 	rbutton_cropBB.set_group(group1);
 	rbutton_markBBWithLabel.set_group(group1);
+	rbutton_cropMultipleBB.set_group(group1);
  	rbutton_markBB.set_active();
 	m_grid1.attach(rbutton_markBB,0,2,1,1);
 	rbutton_markBB.show();
-	m_grid1.attach(rbutton_cropBB,2,2,1,1);
+	m_grid1.attach(rbutton_cropBB,1,2,1,1);
 	rbutton_cropBB.show();
-	m_grid1.attach(rbutton_markBBWithLabel,4,2,1,1);
+	m_grid1.attach(rbutton_markBBWithLabel,2,2,1,1);
 	rbutton_markBBWithLabel.show();
+	m_grid1.attach(rbutton_cropMultipleBB,0,3,2,1);
+	rbutton_cropMultipleBB.show();
 
 	button_loadImage.signal_clicked().connect(sigc::bind<Glib::ustring>(
               sigc::mem_fun(*this, &annotation::on_button_clicked), "loadImage"));
-	m_grid1.attach(button_loadImage,0,3,1,1);
+	m_grid1.attach(button_loadImage,0,4,1,1);
 	button_loadImage.show();
 
 /*
@@ -83,7 +89,7 @@ annotation::annotation():
 	m_grid_imageLoad.attach(button_loadMainWindow,0,10,1,1);
 	button_resetMarkings.show();
 
-	m_grid_imageLoad.attach(image,0,1,1,1);
+	m_grid_imageLoad.attach(image,0,1,2,1);
 	
 	
 	
@@ -163,6 +169,12 @@ annotation::annotation():
               sigc::mem_fun(*this, &annotation::on_button_clicked), "saveMarkedMultiple"));
 	m_grid_imageLoad.attach(button_saveMarkedMultiple,2,6,1,1);
 	button_saveMarkedMultiple.show();
+
+	button_saveCropMarkedMultiple.signal_clicked().connect(sigc::bind<Glib::ustring>(
+              sigc::mem_fun(*this, &annotation::on_button_clicked), "saveCropMarkedMultiple"));
+	m_grid_imageLoad.attach(button_saveCropMarkedMultiple,2,6,1,1);
+	button_saveCropMarkedMultiple.show();
+
 
 	m_sw_imageLoad.add(m_grid_imageLoad);
 
@@ -355,6 +367,7 @@ void annotation::on_button_clicked(Glib::ustring data)
 		storageROILocationCurrent.push_back(temp);
 		storageFileName.push_back(filename);
 		storage++;
+		cout << "filename = " << filename << endl;
 		loadOriginalImageWithSavedMarkings(filename, storageROILocationCurrent, 1);
 		
 	}
@@ -423,5 +436,52 @@ void annotation::on_button_clicked(Glib::ustring data)
  		dialog.set_secondary_text("The details have been saved into the file " + text_outputFile.get_text() + " and the cropped images have been saved");
 
 //  		dialog.run();
+	}
+	else if(data == "saveCropMarkedMultiple")
+	{
+		ofstream myfile;
+		myfile.open(text_outputFile.get_text());
+		std::string tempFileName = storageFileName[0];
+		
+		for(int i = 0; i < storage; i++)
+		{
+			cout << storageFileName[i] << " " << storageROILocationCurrent[i][0] << " " << widthMultiplier[i] << " " << heightMultiplier[i] << endl;
+			if(i == 0)
+			{
+				myfile << storageFileName[i] << " " << storageROILocationCurrent[i][0] << " " << int(storageROILocationCurrent[i][1]*widthMultiplier[i]) << " " << int(storageROILocationCurrent[i][2]*heightMultiplier[i]) << " " << int(storageROILocationCurrent[i][3]*widthMultiplier[i]) << " " << int(storageROILocationCurrent[i][4]*heightMultiplier[i]) << " ";
+			}
+			else
+			{	
+				if(tempFileName == storageFileName[i])
+				{
+					myfile << storageROILocationCurrent[i][0] << " " << int(storageROILocationCurrent[i][1]*widthMultiplier[i]) << " " << int(storageROILocationCurrent[i][2]*heightMultiplier[i]) << " " << int(storageROILocationCurrent[i][3]*widthMultiplier[i]) << " " << int(storageROILocationCurrent[i][4]*heightMultiplier[i]) << " ";
+				}
+				else
+				{
+					myfile << endl;
+					myfile << storageFileName[i] << " " << storageROILocationCurrent[i][0] << " " << int(storageROILocationCurrent[i][1]*widthMultiplier[i]) << " " << int(storageROILocationCurrent[i][2]*heightMultiplier[i]) << " " << int(storageROILocationCurrent[i][3]*widthMultiplier[i]) << " " << int(storageROILocationCurrent[i][4]*heightMultiplier[i]) << " ";
+					tempFileName = storageFileName[i];
+				}
+			}
+			std::string str2 = storageFileName[i].substr (0,storageFileName[i].length()-4);
+			std::string Result;
+			ostringstream convert;
+			convert << i;
+			Result = convert.str();
+			str2 = str2 + "_cropped_";
+			std::string label;
+			ostringstream convert1;
+			convert1 << storageROILocationCurrent[i][0];
+			label = convert.str();
+			str2 = str2 + label + "_" + Result + ".png";
+			cv::Rect roi(int(storageROILocationCurrent[i][1]*widthMultiplier[i]), int(storageROILocationCurrent[i][2]*heightMultiplier[i]), int(storageROILocationCurrent[i][3]*widthMultiplier[i]) - int(storageROILocationCurrent[i][1]*widthMultiplier[i]), int(storageROILocationCurrent[i][4]*heightMultiplier[i]) - int(storageROILocationCurrent[i][2]*heightMultiplier[i]));
+			Mat img = imread(storageFileName[i],1);
+			cv::Mat image_roi = img(roi);
+			imwrite(str2, image_roi);
+		}	
+		Gtk::MessageDialog dialog(*this, "Message");
+ 		dialog.set_secondary_text("The details have been saved into the file " + text_outputFile.get_text() + " and the images have been cropped");
+
+  		dialog.run();
 	}
 }
