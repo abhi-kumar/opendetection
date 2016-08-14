@@ -63,6 +63,14 @@ void NetworkCreator::on_cell_data_extra(const Gtk::TreeModel::const_iterator& it
 		cell_extraLayerType.property_text() = "-" + extra_extraLayerType + "-";
 	cell_extraLayerType.property_foreground() = "purple";
 
+	//
+	auto row_currentLayers = *iter;
+	const Glib::ustring extra_currentLayers = row_currentLayers[column_currentLayers.m_col_extra];
+	if(extra_currentLayers.empty())
+		cell_currentLayers.property_text() = "";
+	else
+		cell_currentLayers.property_text() = "-" + extra_currentLayers + "-";
+	cell_currentLayers.property_foreground() = "red";
 }
 
 void NetworkCreator::on_combo_changed()
@@ -72,6 +80,7 @@ void NetworkCreator::on_combo_changed()
 	Gtk::TreeModel::iterator iter_normalizationLayerType = combo_normalizationLayerType.get_active();
 	Gtk::TreeModel::iterator iter_lossLayerType = combo_lossLayerType.get_active();
 	Gtk::TreeModel::iterator iter_extraLayerType = combo_extraLayerType.get_active();
+	Gtk::TreeModel::iterator iter_currentLayers = combo_currentLayers.get_active();
 	
 
 	// level 1
@@ -137,6 +146,17 @@ void NetworkCreator::on_combo_changed()
 			Glib::ustring name_extraLayerType = row_extraLayerType[column_extraLayerType.m_col_name];
 //			std::cout << " ID=" << id_extraLayerType << ", name=" << name_extraLayerType << std::endl;
 			extraLayerTypeData = name_extraLayerType;
+		}
+	}
+	if(iter_currentLayers)
+	{
+		Gtk::TreeModel::Row row_currentLayers = *iter_currentLayers;
+	 	if(row_currentLayers)
+		{
+			int id_currentLayers = row_currentLayers[column_currentLayers.m_col_id];
+			Glib::ustring name_currentLayers = row_currentLayers[column_currentLayers.m_col_name];
+//			std::cout << " ID=" << id_extraLayerType << ", name=" << name_extraLayerType << std::endl;
+			currentLayersName = name_currentLayers;
 		}
 	}
 	

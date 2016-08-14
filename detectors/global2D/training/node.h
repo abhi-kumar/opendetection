@@ -3,20 +3,23 @@
 
 struct Node {
 	Glib::ustring data;
+	Glib::ustring name;
 	Node* nextLayer;
 };
 
 
-void initializeLayer(struct Node *headLayer, Glib::ustring data)
+void initializeLayer(struct Node *headLayer, Glib::ustring data, Glib::ustring name)
 {
 	headLayer->data = data;
+	headLayer->name = name;
 	headLayer->nextLayer = NULL;
 }
 
-void appendLayer(struct Node *headLayer, Glib::ustring data)
+void appendLayer(struct Node *headLayer, Glib::ustring data, Glib::ustring name)
 {
 	Node *newLayer = new Node;
 	newLayer->data = data;
+	newLayer->name = name;
 	newLayer->nextLayer = NULL;
 
 	Node *currentLayer = headLayer;
@@ -62,6 +65,10 @@ struct Node *searchLayer(struct Node *headLayer, Glib::ustring data)
 	while(currentLayer)
 	{
 		if(currentLayer->data == data) 
+		{
+			return currentLayer;
+		}
+		else if(currentLayer->data == data) 
 		{
 			return currentLayer;
 		}

@@ -203,6 +203,7 @@ NetworkCreator::NetworkCreator():
 	button_editMore("Add more layers"),
 	box_fullCnnLayerMatter(Gtk::ORIENTATION_VERTICAL),
 	button_deleteLayerAtEnd("Delete Layer at the end"),
+	button_deleteSelectedLayer("Delete the Selected Layer"),
 	button_saveFile("Save File")
 {
 	numLayers = 0;
@@ -1562,6 +1563,26 @@ NetworkCreator::NetworkCreator():
 	buttonBox_fullCnnLayerMatter.set_spacing(5);
 	buttonBox_fullCnnLayerMatter.set_layout(Gtk::BUTTONBOX_END);
 	buffer_fullCnnLayerMatter = Gtk::TextBuffer::create();
+
+
+	ref_currentLayers = Gtk::ListStore::create(column_currentLayers);
+  	combo_currentLayers.set_model(ref_currentLayers);
+	Gtk::TreeModel::Row row_currentLayers = *(ref_currentLayers->append());
+	row_currentLayers[column_currentLayers.m_col_id] = 0;
+	row_currentLayers[column_currentLayers.m_col_name] = "Layers";
+	row_currentLayers[column_currentLayers.m_col_extra] = "All Layers";
+	combo_currentLayers.set_active(row_currentLayers);
+	combo_currentLayers.pack_start(column_currentLayers.m_col_id);
+	combo_currentLayers.pack_start(column_currentLayers.m_col_name);
+	combo_currentLayers.set_cell_data_func(cell_currentLayers,  sigc::mem_fun(*this, &NetworkCreator::on_cell_data_extra));
+	combo_currentLayers.pack_start(cell_currentLayers);
+	
+	buttonBox_fullCnnLayerMatter.pack_start(combo_currentLayers, Gtk::PACK_SHRINK);
+	combo_currentLayers.signal_changed().connect( sigc::mem_fun(*this, &NetworkCreator::on_combo_changed) );
+	button_deleteSelectedLayer.signal_clicked().connect(sigc::bind<Glib::ustring>(
+              sigc::mem_fun(*this, &NetworkCreator::on_button_clicked), "deleteSelectedLayer"));
+	buttonBox_fullCnnLayerMatter.pack_start(button_deleteSelectedLayer, Gtk::PACK_SHRINK);
+
 }
 
 NetworkCreator::~NetworkCreator()
@@ -1647,15 +1668,17 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 //		std::cout << activationLayerTypeMatter << std::endl;
 		if(numLayers == 0)
 		{
-			initializeLayer(headLayer,activationLayerTypeMatter);
+			initializeLayer(headLayer,activationLayerTypeMatter, text_activationLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(activationLayerTypeMatter);
+			fullCnnLayersName.push_back(text_activationLayerName.get_text());
 		}
 		else
 		{
-			appendLayer(headLayer,activationLayerTypeMatter);
+			appendLayer(headLayer,activationLayerTypeMatter, text_activationLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(activationLayerTypeMatter);
+			fullCnnLayersName.push_back(text_activationLayerName.get_text());
 		}	
 	}
 	else if(data == "displayCnnLayers")
@@ -1674,6 +1697,7 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 			Glib::ustring lastLayer = fullCnnLayers[numLayers-1];
 //			std::cout << lastLayer << std:: endl;
 			fullCnnLayers.pop_back();
+			fullCnnLayersName.pop_back();
 			numLayers--;
 			Node *layer = searchLayer(headLayer,lastLayer);
 			if(deleteLayer(&headLayer,layer)) 
@@ -1682,6 +1706,56 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 			showWindow_displayWindow();
 		}
 				
+	}
+	else if(data == "deleteSelectedLayer")
+	{
+		if(numLayers>1 and currentLayersName != headLayer->name)   //cannot delete the first created layer
+		{
+			std::vector<Glib::ustring>::iterator it;
+			it=find(fullCnnLayersName.begin(),fullCnnLayersName.end(),currentLayersName);
+			Glib::ustring currentLayer = fullCnnLayers[it-fullCnnLayersName.begin()];
+			std::cout << currentLayer << std:: endl;
+			Node *layer = searchLayer(headLayer,currentLayer);
+			if(deleteLayer(&headLayer,layer)) 
+				std::cout << "numLayers = "<< numLayers << "\n";
+			fullCnnLayerMatter = displayCNN(headLayer);
+			std::vector <Glib::ustring> string_to_remove1;
+			std::vector <Glib::ustring> string_to_remove2;
+			int length = fullCnnLayers.size();
+			for(int i = length-1; i > -1; i--)
+			{
+				string_to_remove1.push_back(fullCnnLayers[fullCnnLayers.size()-1]);
+				string_to_remove2.push_back(fullCnnLayersName[fullCnnLayersName.size()-1]);
+				fullCnnLayers.pop_back();
+				fullCnnLayersName.pop_back();
+			}				
+			for(int i = length-1; i > -1; i--)
+			{
+				Glib::ustring temp1 = string_to_remove1[string_to_remove1.size()-1];
+				Glib::ustring temp2 = string_to_remove2[string_to_remove2.size()-1];
+				string_to_remove1.pop_back();
+				string_to_remove2.pop_back();
+				if(temp2 != currentLayersName)
+				{
+					fullCnnLayers.push_back(temp1);				
+					fullCnnLayersName.push_back(temp2);
+				}									
+			}
+//			fullCnnLayers.erase(std::remove(fullCnnLayers.begin(), fullCnnLayers.end(), string_to_remove), fullCnnLayers.end());
+//			fullCnnLayersName.erase(std::remove(fullCnnLayersName.begin(), fullCnnLayersName.end(), string_to_remove), fullCnnLayersName.end());
+			std::cout << fullCnnLayers.size() << std::endl;
+//			fullCnnLayers[it-fullCnnLayersName.begin()] = "";
+//			fullCnnLayersName[it-fullCnnLayersName.begin()] = "";
+			numLayers--;
+/*
+			Glib::ustring lastLayer = fullCnnLayers[numLayers-1];
+//			std::cout << lastLayer << std:: endl;
+			fullCnnLayers.pop_back();
+			fullCnnLayersName.pop_back();
+			numLayers--;
+*/			
+			showWindow_displayWindow();
+		}
 	}
 	else if(data == "criticalLayerType")
 	{
@@ -1902,15 +1976,17 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 		}
 		if(numLayers == 0)
 		{
-			initializeLayer(headLayer,criticalLayerTypeMatter);
+			initializeLayer(headLayer,criticalLayerTypeMatter, text_criticalLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(criticalLayerTypeMatter);
+			fullCnnLayersName.push_back(text_criticalLayerName.get_text());
 		}
 		else
 		{
-			appendLayer(headLayer,criticalLayerTypeMatter);
+			appendLayer(headLayer,criticalLayerTypeMatter, text_criticalLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(criticalLayerTypeMatter);
+			fullCnnLayersName.push_back(text_criticalLayerName.get_text());
 		}
 	}
 	else if(data == "normalizationLayerType")
@@ -1966,15 +2042,17 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 		}
 		if(numLayers == 0)
 		{
-			initializeLayer(headLayer,normalizationLayerTypeMatter);
+			initializeLayer(headLayer,normalizationLayerTypeMatter, text_normalizationLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(normalizationLayerTypeMatter);
+			fullCnnLayersName.push_back(text_normalizationLayerName.get_text());
 		}
 		else
 		{
-			appendLayer(headLayer,normalizationLayerTypeMatter);
+			appendLayer(headLayer,normalizationLayerTypeMatter, text_normalizationLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(normalizationLayerTypeMatter);
+			fullCnnLayersName.push_back(text_normalizationLayerName.get_text());
 		}
 	}
 	else if(data == "setLossParameters")
@@ -2049,15 +2127,17 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 		}
 		if(numLayers == 0)
 		{
-			initializeLayer(headLayer,lossLayerTypeMatter);
+			initializeLayer(headLayer,lossLayerTypeMatter, text_lossLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(lossLayerTypeMatter);
+			fullCnnLayersName.push_back(text_lossLayerName.get_text());
 		}
 		else
 		{
-			appendLayer(headLayer,lossLayerTypeMatter);
+			appendLayer(headLayer,lossLayerTypeMatter, text_lossLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(lossLayerTypeMatter);
+			fullCnnLayersName.push_back(text_lossLayerName.get_text());
 		}
 
 	}
@@ -2204,15 +2284,17 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 		}	
 		if(numLayers == 0)
 		{
-			initializeLayer(headLayer,extraLayerTypeMatter);
+			initializeLayer(headLayer,extraLayerTypeMatter, text_extraLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(extraLayerTypeMatter);
+			fullCnnLayersName.push_back(text_extraLayerName.get_text());
 		}
 		else
 		{
-			appendLayer(headLayer,extraLayerTypeMatter);
+			appendLayer(headLayer,extraLayerTypeMatter, text_extraLayerName.get_text());
 			numLayers++;
 			fullCnnLayers.push_back(extraLayerTypeMatter);
+			fullCnnLayersName.push_back(text_extraLayerName.get_text());
 		}
 	}
 	else if(data == "addMoreLayer3")

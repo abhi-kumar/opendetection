@@ -17,6 +17,8 @@
 #include <sstream>
 #include <vector>
 
+
+
 class NetworkCreator : public Gtk::Window
 {
 	public:
@@ -69,6 +71,7 @@ class NetworkCreator : public Gtk::Window
 					button_setLossParameters,
 					button_addMoreLayer5,
 					button_setExtraParameters,
+					button_deleteSelectedLayer,
 					button_saveFile;
 		Gtk::Entry 		text_networkFileName,
 					text_activationLayerTop,
@@ -213,7 +216,8 @@ class NetworkCreator : public Gtk::Window
 					combo_criticalLayerType,
 					combo_normalizationLayerType,
 					combo_lossLayerType,
-					combo_extraLayerType;
+					combo_extraLayerType,
+					combo_currentLayers;
 		Gtk::TextView 		textView_fullCnnLayerMatter;
 		Glib::RefPtr<Gtk::TextBuffer> buffer_fullCnnLayerMatter;
 		Gtk::Box 		box_fullCnnLayerMatter;
@@ -255,17 +259,20 @@ class NetworkCreator : public Gtk::Window
 						column_criticalLayerType,
 						column_normalizationLayerType,
 						column_lossLayerType,
-						column_extraLayerType;
+						column_extraLayerType,
+						column_currentLayers;
 		Gtk::CellRendererText		cell_activationLayerType,
 						cell_criticalLayerType,
 						cell_normalizationLayerType,
 						cell_lossLayerType,
-						cell_extraLayerType;
+						cell_extraLayerType,
+						cell_currentLayers;
 		Glib::RefPtr<Gtk::ListStore> 	ref_activationLayerType,
 						ref_criticalLayerType,
 						ref_normalizationLayerType,
 						ref_lossLayerType,
-						ref_extraLayerType;
+						ref_extraLayerType,
+						ref_currentLayers;
 
 
 	private:
@@ -278,6 +285,8 @@ class NetworkCreator : public Gtk::Window
 		int 			numLayers;
 		Glib::ustring		fullCnnLayerMatter;
 		std::vector<Glib::ustring>	fullCnnLayers;
+		std::vector<Glib::ustring>	fullCnnLayersName;
+		Glib::ustring		currentLayersName;
 
 };
 
