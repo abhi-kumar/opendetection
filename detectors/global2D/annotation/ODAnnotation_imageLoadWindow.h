@@ -457,7 +457,8 @@ void annotation::loadOriginalImage(std::string data, bool st)
 	Mat img = imread(data, 1);
 	int c = img.cols;
 	int r = img.rows;
-	float wTemp, hTemp;
+	float wTemp = 1;
+	float hTemp = 1;
 	if(img.rows > 480 or img.cols > 640)
 	{
 		cv::resize(img, img, Size(640,480));
@@ -480,7 +481,8 @@ void annotation::loadOriginalImageWithSavedMarkings(std::string data, vector< ve
 	Mat img = imread(data, 1);
 	int c = img.cols;
 	int r = img.rows;
-	float wTemp, hTemp;
+	float wTemp = 1;
+	float hTemp = 1;
 	if(img.rows > 480 or img.cols > 640)
 	{
 		cv::resize(img, img, Size(640,480));
