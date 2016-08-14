@@ -2242,6 +2242,10 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 		myfile.open(networkFileName);
 		std::cout << "Network File Name saved as: " << networkFileName << std::endl;
 		myfile << "#File generated using OpenDetection" << std::endl;
+		for(int i = 0; i < numLayers; i++)
+		{
+			myfile << fullCnnLayers[i]; 
+		}
 		myfile.close();
 	}
 		
