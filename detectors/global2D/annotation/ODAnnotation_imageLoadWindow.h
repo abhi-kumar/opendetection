@@ -136,7 +136,7 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		
 
 		text_annotationLabel.set_max_length(100);
-		text_annotationLabel.set_text("0");
+		text_annotationLabel.set_text("");
 		text_annotationLabel.select_region(0, text_annotationLabel.get_text_length());
 //		m_grid_imageLoad.attach(text_outputFile,2,4,1,1);	
 		text_annotationLabel.show();
@@ -189,7 +189,7 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		
 
 		text_annotationLabel.set_max_length(100);
-		text_annotationLabel.set_text("0");
+		text_annotationLabel.set_text("");
 		text_annotationLabel.select_region(0, text_annotationLabel.get_text_length());
 //		m_grid_imageLoad.attach(text_outputFile,2,4,1,1);	
 		text_annotationLabel.show();
@@ -384,7 +384,7 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		
 
 		text_annotationLabel.set_max_length(100);
-		text_annotationLabel.set_text("0");
+		text_annotationLabel.set_text("");
 		text_annotationLabel.select_region(0, text_annotationLabel.get_text_length());
 //		m_grid_imageLoad.attach(text_outputFile,2,4,1,1);	
 		text_annotationLabel.show();
@@ -457,7 +457,7 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 		
 
 		text_annotationLabel.set_max_length(100);
-		text_annotationLabel.set_text("0");
+		text_annotationLabel.set_text("");
 		text_annotationLabel.select_region(0, text_annotationLabel.get_text_length());
 //		m_grid_imageLoad.attach(text_outputFile,2,4,1,1);	
 		text_annotationLabel.show();
@@ -578,8 +578,14 @@ void annotation::createDot(int x, int y)
 
 void annotation::createVisualROI(int x1, int y1, int x2, int y2)
 {
+	std::string text = text_annotationLabel.get_text();
+	int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
+	double fontScale = 1;
+	int thickness = 2;  
+	cv::Point textOrg(x1, y1);
 	Mat img = imread("../examples/objectdetector/Annotation/temp_resized_dotted.png", 1);
 	rectangle(img, Point(x1,y1), Point(x2,y2), Scalar(0,255,0), 3, 8, 0 );
+	cv::putText(img, text, textOrg, fontFace, fontScale, Scalar(0,0,255), thickness,8);
 	imwrite("../examples/objectdetector/Annotation/temp_resized_dotted.png", img);
 	image.set("../examples/objectdetector/Annotation/temp_resized_dotted.png");
 	image.show();

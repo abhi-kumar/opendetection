@@ -122,7 +122,7 @@ annotation::annotation():
 		
 
 	text_annotationLabel.set_max_length(100);
-	text_annotationLabel.set_text("0");
+	text_annotationLabel.set_text("");
 	text_annotationLabel.select_region(0, text_annotationLabel.get_text_length());
 	m_grid_imageLoad.attach(text_annotationLabel,1,4,1,1);	
 	text_annotationLabel.show();
