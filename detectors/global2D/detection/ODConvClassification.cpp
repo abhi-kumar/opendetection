@@ -183,12 +183,13 @@ namespace od
 			}
 
 
-//			net_m.Forward();   # for newer versions of caffe
+//			net_m.Forward();
 			Blob<float>* output_layer = net_m.output_blobs()[0];
 			const float* begin = output_layer->cpu_data();
 			const float* end = begin + output_layer->channels();
 			return std::vector<float>(begin, end);
 		}
+
 		void ODConvClassification::runMultiClassClassifierPythonMode()
 		{
 			string mode = "";
@@ -200,7 +201,38 @@ namespace od
 			string cmd = "python ../examples/objectdetector/AAM_Classify/classify.py " + networkFileLocation + " " + weightModelFileLoaction + " " + imageFileLocation + " " + outputFileLocation + " " + mode;
 			system(cmd.c_str());
 
-		}		
+		}	
+
+		void ODConvClassification::setSegnetLocation(string location)
+		{
+			segnetLocation = location;
+		}
+		void ODConvClassification::setImageGroundTruthFileLocation(string location)
+		{
+			imageGroundTruthFileLocation = location;
+		}
+		void ODConvClassification::setColorLocation(string location)
+		{
+			colorLocation = location;
+		}
+		void ODConvClassification::runSegnetBasedClassifierPythonMode()
+		{
+			string mode = "";
+			#if(WITH_GPU)
+			mode = "gpu";
+			#else
+			mode = "cpu";
+			#endif
+//			string segnet_location = argv[1];
+//			string model_file   = argv[2];
+//			string trained_file = argv[3];
+//			string test_image = argv[4];
+//			string test_image_gt = argv[5];
+//			string color = argv[6];
+//			string mode = argv[7];
+			string cmd = "python ../examples/objectdetector/Segnet_Classify/test.py " + segnetLocation + " " + networkFileLocation + " " + weightModelFileLoaction + " " + imageFileLocation + " " + imageGroundTruthFileLocation + " " + colorLocation + " " + mode;
+			system(cmd.c_str());
+		}	
 /*
 		std::vector<float> ODConvClassification::Predict(const cv::Mat& img)
 		{

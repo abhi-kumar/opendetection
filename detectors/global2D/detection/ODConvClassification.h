@@ -73,6 +73,17 @@ namespace od
 				void runMultiClassClassifierPythonMode();
 				std::vector<float> Predict(const cv::Mat& img);
 				void WrapInputLayer(std::vector<cv::Mat>* input_channels); 
+
+
+				//Segnet classification
+				void setSegnetLocation(string location);
+				void setImageGroundTruthFileLocation(string location);
+				void setColorLocation(string location);
+				string segnetLocation;
+				string imageGroundTruthFileLocation;
+				string colorLocation;
+				void runSegnetBasedClassifierPythonMode();
+
 			
 			private:
 				cv::Size input_geometry_;
