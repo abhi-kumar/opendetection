@@ -1,2 +1,2 @@
-/home/abhi/Desktop/Thesis/GSOC/target2/opendetection/examples/objectdetector/Annotation/Images/sample2.ppm 0 616 463 741 588 
-/home/abhi/Desktop/Thesis/GSOC/target2/opendetection/examples/objectdetector/Annotation/Images/sample1.png 0 607 295 817 502 0 420 316 483 390 
+/home/abhi/Desktop/Thesis/GSOC/target2/opendetection/examples/objectdetector/Annotation/Images/sample2.ppm ID1 0 575 463 716 463 775 553 677 595 556 558  ID2 1 935 225 1107 211 1258 198 1294 353 1270 458 1068 476 964 470 911 365 907 295 
+/home/abhi/Desktop/Thesis/GSOC/target2/opendetection/examples/objectdetector/Annotation/Images/sample1.png ID3 0 624 312 753 306 799 406 775 501 700 504 631 480 601 426 597 360  ID4 0 426 304 483 316 489 379 430 400 405 393 399 340  ID5 3 186 253 256 234 270 354 273 475 204 477 156 441 159 346 154 280 

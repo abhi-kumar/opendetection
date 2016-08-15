@@ -214,6 +214,60 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 
 		
 	}
+	else if(rbutton_segnetMaskedBased.get_active() == 1 and file_folder == "file")
+	{
+		label_outputFile.hide();
+		text_outputFile.hide();
+		button_resetMarkings.hide();
+		button_selectRoi.hide();
+		button_saveMarked.hide();
+		button_saveCropMarked.hide();
+		button_loadAnotherImage.hide();
+		button_resetMarkingsCurrent.hide();
+		button_selectRoiCurrent.hide();
+		label_annotationLabel.hide();
+		text_annotationLabel.hide();
+		button_saveMarkedMultiple.hide();
+		button_loadNextImage.hide();
+		button_saveCropMarkedMultiple.hide();
+		button_resetSegnetMaskCurrent.hide();	
+		button_selectSegnetMaskCurrent.hide();
+		button_saveSegnetMask.hide();
+
+		loadOriginalImage(data, 0);
+		button_resetSegnetMaskCurrent.show();	
+		button_selectSegnetMaskCurrent.show();
+		
+		label_annotationLabel.set_text("Give a label to ROI: ");
+		label_annotationLabel.set_line_wrap();
+		label_annotationLabel.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_imageLoad.attach(label_annotationLabel,0,4,2,1);
+		label_annotationLabel.show();
+		
+
+		text_annotationLabel.set_max_length(100);
+		text_annotationLabel.set_text("");
+		text_annotationLabel.select_region(0, text_annotationLabel.get_text_length());
+//		m_grid_imageLoad.attach(text_outputFile,2,4,1,1);	
+		text_annotationLabel.show();
+	
+		button_loadAnotherImage.show();
+
+		label_outputFile.set_text("OutPut Text File Name: ");
+		label_outputFile.set_line_wrap();
+		label_outputFile.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_imageLoad.attach(label_outputFile,0,2,2,1);
+		label_outputFile.show();
+		
+
+		text_outputFile.set_max_length(100);
+		text_outputFile.set_text("../examples/objectdetector/Annotation/output.txt");
+		text_outputFile.select_region(0, text_outputFile.get_text_length());
+//		m_grid_imageLoad.attach(text_outputFile,2,2,1,1);	
+		text_outputFile.show();
+		
+		button_saveSegnetMask.show();
+	}
 	else if(rbutton_markBB.get_active() == 1 and file_folder == "folder")
 	{
 		label_outputFile.hide();
@@ -481,6 +535,81 @@ void annotation::showWindow_imageLoad(Glib::ustring data)
 
 		button_saveCropMarkedMultiple.show();
 	}
+	else if(rbutton_segnetMaskedBased.get_active() == 1 and file_folder == "folder")
+	{
+		label_outputFile.hide();
+		text_outputFile.hide();
+		button_resetMarkings.hide();
+		button_selectRoi.hide();
+		button_saveMarked.hide();
+		button_loadAnotherImage.hide();
+		button_saveCropMarked.hide();
+		button_resetMarkingsCurrent.hide();
+		button_selectRoiCurrent.hide();
+		label_annotationLabel.hide();
+		text_annotationLabel.hide();
+		button_saveMarkedMultiple.hide();
+		button_loadNextImage.hide();
+		button_saveCropMarkedMultiple.hide();
+		button_resetSegnetMaskCurrent.hide();	
+		button_selectSegnetMaskCurrent.hide();
+		button_saveSegnetMask.hide();
+
+		
+		DIR *dpdf;
+		struct dirent *epdf;
+
+		dpdf = opendir(foldername.c_str());
+		if (dpdf != NULL)
+		{
+			while (epdf = readdir(dpdf))
+			{
+				string val = epdf->d_name;
+				if(val.length() > 3)
+				{
+					string fName = foldername + "/" + epdf->d_name;
+					cout << fName << endl; 
+					imageFileNames.push_back(fName); 
+					imagesInFolder++;
+				}
+		   	}
+		}
+		filename = imageFileNames[--imagesInFolder];
+		loadOriginalImage(filename, 0);
+		button_resetSegnetMaskCurrent.show();	
+		button_selectSegnetMaskCurrent.show();
+		
+		label_annotationLabel.set_text("Give a label to ROI: ");
+		label_annotationLabel.set_line_wrap();
+		label_annotationLabel.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_imageLoad.attach(label_annotationLabel,0,4,2,1);
+		label_annotationLabel.show();
+		
+
+		text_annotationLabel.set_max_length(100);
+		text_annotationLabel.set_text("");
+		text_annotationLabel.select_region(0, text_annotationLabel.get_text_length());
+//		m_grid_imageLoad.attach(text_outputFile,2,4,1,1);	
+		text_annotationLabel.show();
+	
+		button_loadAnotherImage.show();
+		button_loadNextImage.show();
+
+		label_outputFile.set_text("OutPut Text File Name: ");
+		label_outputFile.set_line_wrap();
+		label_outputFile.set_justify(Gtk::JUSTIFY_FILL);
+//		m_grid_imageLoad.attach(label_outputFile,0,2,2,1);
+		label_outputFile.show();
+		
+
+		text_outputFile.set_max_length(100);
+		text_outputFile.set_text("../examples/objectdetector/Annotation/output.txt");
+		text_outputFile.select_region(0, text_outputFile.get_text_length());
+//		m_grid_imageLoad.attach(text_outputFile,2,2,1,1);	
+		text_outputFile.show();
+		
+		button_saveSegnetMask.show();
+	}
 	else
 	{
 		label_outputFile.hide();
@@ -524,10 +653,24 @@ bool annotation::on_button_press_event(GdkEventButton *event)
 		// Start moving the view
 		moveFlag=true;
 		// Event has been handled
+//		cout << lastXMouse << " " << lastYMouse << endl;
 		if(currentWindow == "imageLoadWindow")
 		{
 //			std::cout << lastXMouse - 10 << " " << lastYMouse - 10 << std::endl;
 			createDot(lastXMouse-10, lastYMouse-35);
+		}
+		if(rbutton_segnetMaskedBased.get_active() == 1)
+		{
+			vector <int> temp;
+			std::string label = text_annotationLabel.get_text();
+			int Result; 
+			istringstream convert(label);
+			if ( !(convert >> Result) )
+				Result = 0;
+			temp.push_back(Result);
+			temp.push_back(lastXMouse-10);
+			temp.push_back(lastYMouse-35);
+			roiPointsForMask.push_back(temp);
 		}
 		return true;
 	}
@@ -567,6 +710,7 @@ bool annotation::on_button_press_event(GdkEventButton *event)
 	return false;
 }
 
+
 void annotation::createDot(int x, int y)
 {
 	Mat img = imread("../examples/objectdetector/Annotation/temp_resized_dotted.png", 1);
@@ -598,12 +742,12 @@ void annotation::loadOriginalImage(std::string data, bool st)
 	int r = img.rows;
 	float wTemp = 1;
 	float hTemp = 1;
-	if(img.rows > 480 or img.cols > 640)
-	{
+//	if(img.rows > 480 or img.cols > 640)
+//	{
 		cv::resize(img, img, Size(640,480));
 		wTemp = (float)c/640.0;
 		hTemp = (float)r/480.0;			
-	}
+//	}
 	if(st)
 	{
 		widthMultiplier.push_back(wTemp);
@@ -622,12 +766,12 @@ void annotation::loadOriginalImageWithSavedMarkings(std::string data, vector< ve
 	int r = img.rows;
 	float wTemp = 1;
 	float hTemp = 1;
-	if(img.rows > 480 or img.cols > 640)
-	{
+//	if(img.rows > 480 or img.cols > 640)
+//	{
 		cv::resize(img, img, Size(640,480));
 		wTemp = (float)c/640.0;
 		hTemp = (float)r/480.0;			
-	}
+//	}
 	if(st)
 	{
 		widthMultiplier.push_back(wTemp);
@@ -642,4 +786,41 @@ void annotation::loadOriginalImageWithSavedMarkings(std::string data, vector< ve
 	imwrite("../examples/objectdetector/Annotation/temp_resized_dotted.png", img);
 	image.set("../examples/objectdetector/Annotation/temp_resized_dotted.png");
 	image.show();
+}
+void annotation::loadResetedMarkings(string data, vector< vector < int > > roi, bool st)
+{
+	
+
+	Mat img1 = imread(data, 1);
+	int c = img1.cols;	
+	int r = img1.rows;
+	float wTemp = 1.0;
+	float hTemp = 1.0;
+//	if(img1.rows > 480 or img1.cols > 640)
+//	{
+		cv::resize(img1, img1, Size(640,480));
+		wTemp = (float)c/640.0;
+		hTemp = (float)r/480.0;			
+//	}
+//	if(st)
+//	{
+//		widthMultiplier.push_back(wTemp);
+//		heightMultiplier.push_back(hTemp);
+//	}
+	imwrite("../examples/objectdetector/Annotation/temp_resized.png", img1);
+	if(roi.size() > 0)
+	{
+		for(int i = 0; i < roi.size()-1; i++)
+		{
+//			cout << roi.size() << " " << roi[i+1][3] << " " << roi[i][3] << endl;
+			if((roi[i+1][0] == roi[i][0]) and (roi[i+1][3] == roi[i][3]))
+			{
+				if(storageFileName[i] == filename)
+					line(img1, Point(roi[i][1],roi[i][2]), Point(roi[i+1][1],roi[i+1][2]), Scalar(0,255,0), 3, 8, 0 );
+			}
+		}
+	}
+	imwrite("../examples/objectdetector/Annotation/temp_resized_dotted.png", img1);
+	image.set("../examples/objectdetector/Annotation/temp_resized_dotted.png");
+	image.show(); 	
 }

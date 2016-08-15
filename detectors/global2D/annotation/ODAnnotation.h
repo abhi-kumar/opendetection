@@ -63,7 +63,7 @@ class annotation : public Gtk::Window
 		void loadOriginalImage(std::string data, bool st);
 		void createVisualROI(int xPressed, int yPressed, int xReleased, int yReleased);
 		void loadOriginalImageWithSavedMarkings(std::string filename, vector< vector < int > > storageROILocationMultiple, bool st);
-
+		void loadResetedMarkings(string data, vector< vector < int > > roi, bool st);
 		// Child widgets:
 		Gtk::Grid 		m_grid1,
 					m_grid_imageLoad;
@@ -85,10 +85,13 @@ class annotation : public Gtk::Window
 					button_selectDatasetFolder,
 					button_saveCropMarkedMultiple,
 					button_loadNextImage,
+					button_resetSegnetMaskCurrent,
+					button_selectSegnetMaskCurrent,
+					button_saveSegnetMask,
 					button_quit;
 
 		Gtk::RadioButton	rbutton_markBB, rbutton_cropBB, rbutton_markBBWithLabel,
-					rbutton_cropMultipleBB;
+					rbutton_cropMultipleBB, rbutton_segnetMaskedBased;
 
 		Gtk::Label		label_annotationType,
 					label_outputFile,
@@ -114,6 +117,9 @@ class annotation : public Gtk::Window
 		vector <float>		widthMultiplier, heightMultiplier;
 		vector< vector < int > >	storageROILocationCurrent;
 		bool			status;
+		vector< vector < int > >	roiPointsForMask, roiPointsForMaskPermanent;
+		int			storageID;
+		float			w,h;
 };
 
 

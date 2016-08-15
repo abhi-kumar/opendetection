@@ -10,6 +10,7 @@ annotation::annotation():
 	rbutton_cropBB("Save points and crop single Bounding Box per image"),
 	rbutton_markBBWithLabel("Save Multiple Bounding Boxes' Points with attached class labels"),
 	rbutton_cropMultipleBB("Save points and crop multiple Bounding Boxes per image with attached class labels"),
+	rbutton_segnetMaskedBased("Create masks based on labels, as required by segnet"),
 	label_annotationType(""),
 	text_outputFile(),
 	label_outputFile(""),
@@ -26,10 +27,14 @@ annotation::annotation():
 	label_annotationLabel(""),
 	button_selectDatasetFolder("Select the Dataset Folder"),
 	button_loadNextImage("Load Next Image from same folder"),
+	button_resetSegnetMaskCurrent("Reset Current Markings"),
+	button_selectSegnetMaskCurrent("Save the region's points with stated label"),
+	button_saveSegnetMask("Save all Masks"),
 
 	button_quit("Quit")
 {
 	storage = 0;
+	storageID=0;
 	imagesInFolder = 0;
 	currentWindow = "mainWindow";
 	set_title("Annotator");
@@ -53,6 +58,7 @@ annotation::annotation():
 	rbutton_cropBB.set_group(group1);
 	rbutton_markBBWithLabel.set_group(group1);
 	rbutton_cropMultipleBB.set_group(group1);
+	rbutton_segnetMaskedBased.set_group(group1);
  	rbutton_markBB.set_active();
 	m_grid1.attach(rbutton_markBB,0,2,1,1);
 	rbutton_markBB.show();
@@ -62,6 +68,8 @@ annotation::annotation():
 	rbutton_markBBWithLabel.show();
 	m_grid1.attach(rbutton_cropMultipleBB,0,3,2,1);
 	rbutton_cropMultipleBB.show();
+	m_grid1.attach(rbutton_segnetMaskedBased,2,3,2,1);
+	rbutton_segnetMaskedBased.show();
 
 	button_loadImage.signal_clicked().connect(sigc::bind<Glib::ustring>(
               sigc::mem_fun(*this, &annotation::on_button_clicked), "loadImage"));
@@ -109,6 +117,11 @@ annotation::annotation():
 	m_grid_imageLoad.attach(button_resetMarkingsCurrent,0,3,1,1);
 	button_resetMarkingsCurrent.show();
 
+	button_resetSegnetMaskCurrent.signal_clicked().connect(sigc::bind<Glib::ustring>(
+              sigc::mem_fun(*this, &annotation::on_button_clicked), "resetSegnetMaskCurrent"));
+	m_grid_imageLoad.attach(button_resetSegnetMaskCurrent,0,3,1,1);
+	button_resetSegnetMaskCurrent.show();
+
 	button_selectRoi.signal_clicked().connect(sigc::bind<Glib::ustring>(
               sigc::mem_fun(*this, &annotation::on_button_clicked), "selectRoi"));
 	m_grid_imageLoad.attach(button_selectRoi,0,4,1,1);
@@ -131,6 +144,11 @@ annotation::annotation():
               sigc::mem_fun(*this, &annotation::on_button_clicked), "selectRoiCurrent"));
 	m_grid_imageLoad.attach(button_selectRoiCurrent,2,4,1,1);
 	button_selectRoiCurrent.show();
+
+	button_selectSegnetMaskCurrent.signal_clicked().connect(sigc::bind<Glib::ustring>(
+              sigc::mem_fun(*this, &annotation::on_button_clicked), "selectSegnetMaskCurrent"));
+	m_grid_imageLoad.attach(button_selectSegnetMaskCurrent,2,4,1,1);
+	button_selectSegnetMaskCurrent.show();
 
 	button_loadAnotherImage.signal_clicked().connect(sigc::bind<Glib::ustring>(
               sigc::mem_fun(*this, &annotation::on_button_clicked), "loadAnotherImage"));
@@ -175,6 +193,10 @@ annotation::annotation():
 	m_grid_imageLoad.attach(button_saveCropMarkedMultiple,2,6,1,1);
 	button_saveCropMarkedMultiple.show();
 
+	button_saveSegnetMask.signal_clicked().connect(sigc::bind<Glib::ustring>(
+              sigc::mem_fun(*this, &annotation::on_button_clicked), "saveSegnetMask"));
+	m_grid_imageLoad.attach(button_saveSegnetMask,2,6,1,1);
+	button_saveSegnetMask.show();
 
 	m_sw_imageLoad.add(m_grid_imageLoad);
 
@@ -338,6 +360,25 @@ void annotation::on_button_clicked(Glib::ustring data)
 	{
 		loadOriginalImageWithSavedMarkings(filename, storageROILocationCurrent, 0);
 	}
+	else if(data == "resetSegnetMaskCurrent")
+	{
+/*		int length = roiPointsForMask.size();
+		std::string label = text_annotationLabel.get_text();
+		int Result; 
+		istringstream convert(label);
+		if ( !(convert >> Result) )
+			Result = 0;
+		for( int i = length-1; i > -1; i--)
+		{
+			if(roiPointsForMask[roiPointsForMask.size()-1][0] == Result)	
+				roiPointsForMask.pop_back();
+			else
+				break;
+		}
+*/
+		roiPointsForMask.clear();
+		loadResetedMarkings(filename, roiPointsForMaskPermanent, 0);
+	}
 	else if(data == "selectRoi")
 	{
 		vector<int> temp;
@@ -370,6 +411,36 @@ void annotation::on_button_clicked(Glib::ustring data)
 		cout << "filename = " << filename << endl;
 		loadOriginalImageWithSavedMarkings(filename, storageROILocationCurrent, 1);
 		
+	}
+	else if(data == "selectSegnetMaskCurrent")
+	{
+		storageID++;
+		Mat img1 = imread(filename, 1);
+		int c = img1.cols;	
+		int r = img1.rows;
+		float wTemp = 1.0;
+		float hTemp = 1.0;
+		cv::resize(img1, img1, Size(640,480));
+		wTemp = (float)c/640.0;
+		hTemp = (float)r/480.0;			
+		
+		for(int i = 0; i < roiPointsForMask.size(); i++)
+		{
+			vector<int> temp;		
+			temp.push_back(roiPointsForMask[i][0]);
+			temp.push_back(roiPointsForMask[i][1]);
+			temp.push_back(roiPointsForMask[i][2]);
+			temp.push_back(storageID);
+			roiPointsForMaskPermanent.push_back(temp);
+			storageFileName.push_back(filename);
+			widthMultiplier.push_back(wTemp);
+			heightMultiplier.push_back(hTemp);
+			storage++;
+		}
+		roiPointsForMask.clear();
+
+		loadResetedMarkings(filename, roiPointsForMaskPermanent, 1);			
+//		roiPointsForMaskPermanent
 	}
 	else if(data == "saveMarked")
 	{
@@ -437,6 +508,40 @@ void annotation::on_button_clicked(Glib::ustring data)
 
 //  		dialog.run();
 	}
+	else if(data == "saveSegnetMask")
+	{
+		ofstream myfile;
+		myfile.open(text_outputFile.get_text());
+		std::string tempFileName = storageFileName[0];
+		
+		for(int i = 0; i < storage; i++)
+		{
+			if(i == 0)
+			{
+				myfile << storageFileName[i] << " ID" << roiPointsForMaskPermanent[i][3] << " " << roiPointsForMaskPermanent[i][0] << " " << int(roiPointsForMaskPermanent[i][1]*widthMultiplier[i]) << " " << int(roiPointsForMaskPermanent[i][2]*heightMultiplier[i]) << " ";
+			}
+			else
+			{	
+				if(tempFileName == storageFileName[i])
+				{
+					if(roiPointsForMaskPermanent[i][3] == roiPointsForMaskPermanent[i-1][3])
+						myfile << int(roiPointsForMaskPermanent[i][1]*widthMultiplier[i]) << " " << int(roiPointsForMaskPermanent[i][2]*heightMultiplier[i]) << " ";
+					else
+						myfile << " ID" << roiPointsForMaskPermanent[i][3] << " " << roiPointsForMaskPermanent[i][0] << " " << int(roiPointsForMaskPermanent[i][1]*widthMultiplier[i]) << " " << int(roiPointsForMaskPermanent[i][2]*heightMultiplier[i]) << " ";
+				}
+				else
+				{
+					myfile << endl;
+					myfile << storageFileName[i] << " ID" << roiPointsForMaskPermanent[i][3] << " " << roiPointsForMaskPermanent[i][0] << " " << int(roiPointsForMaskPermanent[i][1]*widthMultiplier[i]) << " " << int(roiPointsForMaskPermanent[i][2]*heightMultiplier[i]) << " ";
+					tempFileName = storageFileName[i];
+				}
+			}
+		}
+		Gtk::MessageDialog dialog(*this, "Message");
+ 		dialog.set_secondary_text("The details have been saved into the file " + text_outputFile.get_text());
+		dialog.run();
+					
+	}
 	else if(data == "saveCropMarkedMultiple")
 	{
 		ofstream myfile;
@@ -445,7 +550,7 @@ void annotation::on_button_clicked(Glib::ustring data)
 		
 		for(int i = 0; i < storage; i++)
 		{
-			cout << storageFileName[i] << " " << storageROILocationCurrent[i][0] << " " << widthMultiplier[i] << " " << heightMultiplier[i] << endl;
+//			cout << storageFileName[i] << " " << storageROILocationCurrent[i][0] << " " << widthMultiplier[i] << " " << heightMultiplier[i] << endl;
 			if(i == 0)
 			{
 				myfile << storageFileName[i] << " " << storageROILocationCurrent[i][0] << " " << int(storageROILocationCurrent[i][1]*widthMultiplier[i]) << " " << int(storageROILocationCurrent[i][2]*heightMultiplier[i]) << " " << int(storageROILocationCurrent[i][3]*widthMultiplier[i]) << " " << int(storageROILocationCurrent[i][4]*heightMultiplier[i]) << " ";
@@ -478,10 +583,6 @@ void annotation::on_button_clicked(Glib::ustring data)
 			Mat img = imread(storageFileName[i],1);
 			cv::Mat image_roi = img(roi);
 			imwrite(str2, image_roi);
-		}	
-		Gtk::MessageDialog dialog(*this, "Message");
- 		dialog.set_secondary_text("The details have been saved into the file " + text_outputFile.get_text() + " and the images have been cropped");
-
-  		dialog.run();
+		}
 	}
 }
