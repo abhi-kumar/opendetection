@@ -133,7 +133,7 @@ SolverProperties::SolverProperties():
 
 	//level1
 
-	label_trainNetworkFileType.set_text("2)Select type of training network file type.\nUsually these exists two types,\nfirst adds validation and training in the same file,\nWhile other adds them in two different files");
+	label_trainNetworkFileType.set_text("2)Select type of training network file type.\nUsually trese exists two types,\nfirst adds validation and training in the same file,\nWhile other adds them in two different files");
 	label_trainNetworkFileType.set_line_wrap();
 	label_trainNetworkFileType.set_justify(Gtk::JUSTIFY_FILL);
 	m_grid1.attach(label_trainNetworkFileType,0,1,2,1);
@@ -676,11 +676,17 @@ void SolverProperties::on_button_clicked(Glib::ustring data)
 	{
 		solverFileName = text_solverFileName.get_text();
 		std::cout << "Solver File Name set as: " << solverFileName << std::endl;
+		Gtk::MessageDialog dialog(*this, "FileName Updated");
+				dialog.set_secondary_text("New name and location: " + solverFileName);
+		dialog.run();
 	}
 	else if(data == "trainNetworkFileName")
 	{
 		trainNetworkFileName = text_trainNetworkFileName.get_text();
 		std::cout << "Train Network File Name set as: " << trainNetworkFileName << std::endl;	
+		Gtk::MessageDialog dialog(*this, "FileName Updated");
+				dialog.set_secondary_text("New name and location: " + trainNetworkFileName);
+		dialog.run();
 	}
 	else if(data == "testNetworkFileName")
 	{
@@ -692,6 +698,9 @@ void SolverProperties::on_button_clicked(Glib::ustring data)
 			dialog.set_secondary_text("\"test_net\" parameter is only required when \"train_net\" parameter is specified");
 			dialog.run();
 		}
+		Gtk::MessageDialog dialog(*this, "FileName Updated");
+				dialog.set_secondary_text("New name and location: " + trainNetworkFileName);
+		dialog.run();
 	}
 	else if(data == "testIter")
 	{
@@ -709,6 +718,9 @@ void SolverProperties::on_button_clicked(Glib::ustring data)
 			dialog.set_secondary_text("Validation parameters can be updated only after enabling them");
 			dialog.run();
 		}
+		Gtk::MessageDialog dialog(*this, "test_iter Updated");
+				dialog.set_secondary_text("test_iter: " + testIter);
+		dialog.run();
 	}
 	else if(data == "testInterval")
 	{
@@ -726,6 +738,9 @@ void SolverProperties::on_button_clicked(Glib::ustring data)
 			dialog.set_secondary_text("Validation parameters can be updated only after enabling them");
 			dialog.run();
 		}
+		Gtk::MessageDialog dialog(*this, "test_interval Updated");
+				dialog.set_secondary_text("test_interval: " + testInterval);
+		dialog.run();
 	}
 	else if(data == "averageLoss")
 	{
@@ -737,6 +752,9 @@ void SolverProperties::on_button_clicked(Glib::ustring data)
 			dialog.set_secondary_text("Average Loss Parameter can be updated only after enabling it");
 			dialog.run();
 		}
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("averageLoss: " + averageLoss);
+		dialog.run();
 	}
 	else if(data == "randomSample")
 	{
@@ -748,11 +766,17 @@ void SolverProperties::on_button_clicked(Glib::ustring data)
 			dialog.set_secondary_text("Random Sample Parameter can be updated only after enabling it");
 			dialog.run();
 		}
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("random_sample: " + randomSample);
+		dialog.run();
 	}
 	else if(data == "display")
 	{
 		display = text_display.get_text();
-		std::cout << "Display after every: " << display << " iterations" << std::endl;	
+		std::cout << "Display after every: " << display << " iterations" << std::endl;
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("display: " + display);
+		dialog.run();	
 	}
 	else if(data == "debugInfo")
 	{
@@ -761,11 +785,17 @@ void SolverProperties::on_button_clicked(Glib::ustring data)
 		else if(rbutton_enableDebugInfo_no.get_active())
 			debugInfo = "0";
 		std::cout << "Debug Information: " << debugInfo << std::endl;	
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("debug_info: " + debugInfo);
+		dialog.run();
 	}
 	else if(data == "snapshot")
 	{
 		snapshot = text_snapshot.get_text();
 		std::cout << "Snapshot saved after every: " << snapshot << " iterations" << std::endl;	
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("snapshot: " + snapshot);
+		dialog.run();
 	}
 	else if(data == "testComputeLoss")
 	{
@@ -773,17 +803,26 @@ void SolverProperties::on_button_clicked(Glib::ustring data)
 			testComputeLoss = "1";
 		else if(rbutton_enableTestComputeLoss_no.get_active())
 			testComputeLoss = "0";
-		std::cout << "Compute Loss in Validation Phase: " << testComputeLoss << std::endl;	
+		std::cout << "Compute Loss in Validation Phase: " << testComputeLoss << std::endl;
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("testComputeLoss: " + testComputeLoss);
+		dialog.run();	
 	}
 	else if(data == "snapshotPrefix")
 	{
 		snapshotPrefix = text_snapshotPrefix.get_text();
 		std::cout << "Snapshot saved with prefix: " << snapshotPrefix << std::endl;	
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("snapshot_prefix: " + snapshotPrefix);
+		dialog.run();
 	}
 	else if(data == "maxIter")
 	{
 		maxIter = text_maxIter.get_text();
 		std::cout << "Maximum iterations set as: " << maxIter << std::endl;	
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("max_iter: " + maxIter);
+		dialog.run();
 	}
 	else if(data == "type")
 	{
@@ -799,7 +838,10 @@ void SolverProperties::on_button_clicked(Glib::ustring data)
 			type = "RMSProp";
 		else if(rbutton_typeNesterov_yes.get_active())
 			type = "Nesterov";
-		std::cout << "Solver Type Set as: " << type << std::endl;	
+		std::cout << "Solver Type Set as: " << type << std::endl;
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("type: " + type);
+		dialog.run();	
 	}
 	else if(data == "learningRatePolicy")
 	{
@@ -819,41 +861,65 @@ void SolverProperties::on_button_clicked(Glib::ustring data)
 			learningRatePolicy = "sigmoid";
 
 		std::cout << "Learning rate policy is set as: " << learningRatePolicy << std::endl;
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("lr_policy: " + learningRatePolicy);
+		dialog.run();
 	}
 	else if(data == "baseLearningRate")
 	{
 		baseLearningRate = text_baseLearningRate.get_text();
 		std::cout << "Initial learning rate set as: " << baseLearningRate << std::endl;	
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("base_lr: " + baseLearningRate);
+		dialog.run();
 	}
 	else if(data == "gamma")
 	{
 		gamma = text_gamma.get_text();
-		std::cout << "Gamma set as: " << gamma << std::endl;	
+		std::cout << "Gamma set as: " << gamma << std::endl;
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("gamma: " + gamma);
+		dialog.run();	
 	}
 	else if(data == "power")
 	{
 		power = text_power.get_text();
-		std::cout << "Power set as: " << power << std::endl;	
+		std::cout << "Power set as: " << power << std::endl;
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("power: " + power);
+		dialog.run();	
 	}
 	else if(data == "stepSize")
 	{
 		stepSize = text_stepSize.get_text();
-		std::cout << "stepSize set as: " << stepSize << std::endl;	
+		std::cout << "stepSize set as: " << stepSize << std::endl;
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("step_size: " + stepSize);
+		dialog.run();	
 	}
 	else if(data == "stepSizeValue")
 	{
 		stepSizeValue = text_stepSizeValue.get_text();
-		std::cout << "stepSizeValue set as: " << stepSizeValue << std::endl;	
+		std::cout << "stepSizeValue set as: " << stepSizeValue << std::endl;
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("step_size_value: " + stepSizeValue);
+		dialog.run();	
 	}
 	else if(data == "weightDecay")
 	{
 		weightDecay = text_weightDecay.get_text();
 		std::cout << "weightDecay set as: " << weightDecay << std::endl;	
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("weight_decay: " + weightDecay);
+		dialog.run();
 	}
 	else if(data == "momentum")
 	{
 		momentum = text_momentum.get_text();
-		std::cout << "momentum set as: " << momentum << std::endl;	
+		std::cout << "momentum set as: " << momentum << std::endl;
+		Gtk::MessageDialog dialog(*this, "Parameter Updated");
+				dialog.set_secondary_text("momentum: " + momentum);
+		dialog.run();	
 	}
 	else if(data == "saveFile")
 	{
@@ -996,6 +1062,9 @@ void SolverProperties::on_button_clicked(Glib::ustring data)
 
 			myfile.close();
 		}
+		Gtk::MessageDialog dialog(*this, "File Saved");
+				dialog.set_secondary_text("File saved as: " + solverFileName);
+		dialog.run();
 	}		
 	
 }
