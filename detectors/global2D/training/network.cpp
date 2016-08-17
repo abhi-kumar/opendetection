@@ -1603,6 +1603,10 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 	{
 		networkFileName = text_networkFileName.get_text();
 		std::cout << "Network File Name set as: " << networkFileName << std::endl;
+		Gtk::MessageDialog dialog(*this, "File Name set");
+				dialog.set_secondary_text("File NAme set as : " + networkFileName);
+		dialog.run();
+		
 	}
 	else if(data == "activationLayerType")
 	{
@@ -1707,7 +1711,10 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 //				fullCnnLayers.push_back(extraLayerTypeMatter);
 //				fullCnnLayersName.push_back(text_extraLayerName.get_text());
 			}
-		}	
+		}
+		Gtk::MessageDialog dialog(*this, "Layer Added");
+				dialog.set_secondary_text("Layer Added: " + text_activationLayerName.get_text());
+		dialog.run();	
 	}
 	else if(data == "displayCnnLayers")
 	{
@@ -1734,7 +1741,9 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 			fullCnnLayerMatter = displayCNN(headLayer);
 			showWindow_displayWindow();
 		}
-				
+		Gtk::MessageDialog dialog(*this, "Layer Deleted");
+				dialog.set_secondary_text("Layer at the end Deleted");
+		dialog.run();		
 	}
 	else if(data == "deleteSelectedLayer")
 	{
@@ -1785,6 +1794,9 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 */			
 			showWindow_displayWindow();
 		}
+		Gtk::MessageDialog dialog(*this, "Layer Deleted");
+				dialog.set_secondary_text(currentLayersName + " Layer Deleted");
+		dialog.run();
 	}
 	else if(data == "criticalLayerType")
 	{
@@ -2038,6 +2050,9 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 //				fullCnnLayersName.push_back(text_extraLayerName.get_text());
 			}
 		}
+		Gtk::MessageDialog dialog(*this, "Layer Added");
+				dialog.set_secondary_text("New Layer Added: " + text_criticalLayerName.get_text());
+		dialog.run();
 	}
 	else if(data == "normalizationLayerType")
 	{
@@ -2125,6 +2140,9 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 //				fullCnnLayersName.push_back(text_extraLayerName.get_text());
 			}
 		}
+		Gtk::MessageDialog dialog(*this, "Layer Added");
+				dialog.set_secondary_text("New Layer Added: " + text_normalizationLayerName.get_text());
+		dialog.run();
 	}
 	else if(data == "setLossParameters")
 	{
@@ -2231,6 +2249,9 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 //				fullCnnLayersName.push_back(text_extraLayerName.get_text());
 			}
 		}
+		Gtk::MessageDialog dialog(*this, "Layer Added");
+				dialog.set_secondary_text("New Layer Added: " + text_lossLayerName.get_text());
+		dialog.run();
 
 	}
 	else if(data == "setExtraParameters")
@@ -2405,6 +2426,9 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 //				fullCnnLayersName.push_back(text_extraLayerName.get_text());
 			}
 		}
+		Gtk::MessageDialog dialog(*this, "Layer Added");
+				dialog.set_secondary_text("New Layer Added: " + text_extraLayerName.get_text());
+		dialog.run();
 	}
 	else if(data == "addMoreLayer3")
 	{
@@ -2443,6 +2467,9 @@ void NetworkCreator::on_button_clicked(Glib::ustring data)
 			myfile << fullCnnLayers[i]; 
 		}
 		myfile.close();
+		Gtk::MessageDialog dialog(*this, "File Saved");
+				dialog.set_secondary_text("File saved as: " + networkFileName);
+		dialog.run();
 	}
 		
 }
