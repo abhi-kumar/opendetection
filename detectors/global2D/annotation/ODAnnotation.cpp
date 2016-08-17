@@ -355,10 +355,16 @@ void annotation::on_button_clicked(Glib::ustring data)
 	else if(data == "resetMarkings")
 	{
 		loadOriginalImage(filename, 0);
+		Gtk::MessageDialog dialog(*this, "Message");
+ 		dialog.set_secondary_text("Recently marked Points have been discarded");
+		dialog.run();
 	}
 	else if(data == "resetMarkingsCurrent")
 	{
 		loadOriginalImageWithSavedMarkings(filename, storageROILocationCurrent, 0);
+		Gtk::MessageDialog dialog(*this, "Message");
+ 		dialog.set_secondary_text("Recently marked Points have been discarded");
+		dialog.run();
 	}
 	else if(data == "resetSegnetMaskCurrent")
 	{
@@ -378,6 +384,9 @@ void annotation::on_button_clicked(Glib::ustring data)
 */
 		roiPointsForMask.clear();
 		loadResetedMarkings(filename, roiPointsForMaskPermanent, 0);
+		Gtk::MessageDialog dialog(*this, "Message");
+ 		dialog.set_secondary_text("Recently marked Points have been discarded");
+		dialog.run();	
 	}
 	else if(data == "selectRoi")
 	{
@@ -391,6 +400,9 @@ void annotation::on_button_clicked(Glib::ustring data)
 		storageFileName.push_back(filename);	
 		storage++;
 		loadOriginalImage(filename, 1);	
+		Gtk::MessageDialog dialog(*this, "Message");
+ 		dialog.set_secondary_text("ROI has been added to the list");
+		dialog.run();	
 	}
 	else if(data == "selectRoiCurrent")
 	{
@@ -410,6 +422,9 @@ void annotation::on_button_clicked(Glib::ustring data)
 		storage++;
 		cout << "filename = " << filename << endl;
 		loadOriginalImageWithSavedMarkings(filename, storageROILocationCurrent, 1);
+		Gtk::MessageDialog dialog(*this, "Message");
+ 		dialog.set_secondary_text("ROI has been added to the list");
+		dialog.run();	
 		
 	}
 	else if(data == "selectSegnetMaskCurrent")
@@ -439,7 +454,10 @@ void annotation::on_button_clicked(Glib::ustring data)
 		}
 		roiPointsForMask.clear();
 
-		loadResetedMarkings(filename, roiPointsForMaskPermanent, 1);			
+		loadResetedMarkings(filename, roiPointsForMaskPermanent, 1);	
+		Gtk::MessageDialog dialog(*this, "Message");
+ 		dialog.set_secondary_text("ROI has been added to the list");
+		dialog.run();		
 //		roiPointsForMaskPermanent
 	}
 	else if(data == "saveMarked")
@@ -584,5 +602,8 @@ void annotation::on_button_clicked(Glib::ustring data)
 			cv::Mat image_roi = img(roi);
 			imwrite(str2, image_roi);
 		}
+		Gtk::MessageDialog dialog(*this, "Message");
+ 		dialog.set_secondary_text("The details have been saved into the file " + text_outputFile.get_text());
+		dialog.run();
 	}
 }
