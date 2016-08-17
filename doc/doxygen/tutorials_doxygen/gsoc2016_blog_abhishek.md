@@ -2805,9 +2805,19 @@ The links to commits:
 Commit 19{#commit19}
 ===
 
-Gsoc Documentation added: [Commit 19: ]()
+Gsoc Documentation added: [Commit 19: Complete blog with link to commits](https://github.com/abhi-kumar/opendetection/commit/5904c9e6b794b25de55f2ba50604921c20299fa4)
+
+The above is a link to show commits which has links to all the commits -> RECURSION LEVEL INFINITE
 
 
+This marks a pseudo end to the GSOC term.
+
+
+**Work left to be completed:**
+
+a) Resolve the issue of cpp version of AAM and segnet based classifier
+
+b) Heat map generator using cnn ( will require time as its is quite research intensive part)
 
 \n
 Older sections of the blog{#oldBlog}
